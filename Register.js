@@ -15,15 +15,19 @@ export default class RegisterScreen extends React.Component{
                     <View style={styles.textInputContainer}>
             
                         <TextInput style={styles.textInputStyle}
+                        placeholderTextColor = "white"
                         placeholder="username"/>
 
                         <TextInput style={styles.textInputStyle}
+                        placeholderTextColor = "white"
                         placeholder="email"/>
 
                         <TextInput style={styles.textInputStyle}
+                        placeholderTextColor = "white"
                         placeholder="password"/>
                         
                         <TextInput style={styles.textInputStyle}
+                        placeholderTextColor = "white"
                         placeholder="confirm password"/>
 
                     </View>
@@ -64,7 +68,6 @@ const styles = StyleSheet.create({
     },  
 
     registerText: {
-        flex: 0.5,
         alignItems: 'center',
         justifyContent: 'flex-end',
         marginTop: 170,
@@ -94,6 +97,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Montserrat',
         fontSize: 18,
+        color: 'white',
         borderBottomWidth: 1,
         borderBottomColor: 'white'
     },
