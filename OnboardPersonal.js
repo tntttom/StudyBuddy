@@ -70,7 +70,7 @@ onboardText: {
     textAlign:'center',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Medium',
     fontSize: 48,
     color: 'white',
 },
@@ -93,7 +93,7 @@ textInputContainer: {
 textInputStyle: {
     width: 190,
     textAlign: 'center',
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Medium',
     fontSize: 18,
     color:'white',
     borderBottomWidth: 1,
@@ -112,7 +112,7 @@ button: {
 },
 
 buttonText: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Medium',
     fontSize: 18,
     color: 'white',
 }

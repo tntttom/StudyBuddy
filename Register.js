@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-end',
         marginTop: 170,
-        fontFamily: 'Montserrat',
+        fontFamily: 'Montserrat-Medium',
         fontSize: 48,
         color: 'white',
     },
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     textInputStyle: {
         width: 190,
         textAlign: 'center',
-        fontFamily: 'Montserrat',
+        fontFamily: 'Montserrat-Medium',
         fontSize: 18,
         color: 'white',
         borderBottomWidth: 1,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     },
 
     buttonText: {
-        fontFamily: 'Montserrat',
+        fontFamily: 'Montserrat-Medium',
         fontSize: 18,
         color: 'white',
     }

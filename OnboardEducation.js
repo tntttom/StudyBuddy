@@ -52,7 +52,7 @@ onboardText: {
     textAlign:'center',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Medium',
     fontSize: 48,
     color: 'white',
 },
@@ -78,7 +78,7 @@ button: {
 },
 
 buttonText: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Medium',
     fontSize: 18,
     color: 'white',
 }
