@@ -2,10 +2,13 @@
 
 import * as React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default class OnboardCollegeScreen extends React.Component{
     render() {
         return (
+
+        <LinearGradient colors={['#FE41C6','#4839FF']} style={{flex:1}}>
             <View style={styles.container}>
             <View style={styles.onbordContainer}>
                 <Text style={styles.onboardText} >university</Text>
@@ -34,7 +37,7 @@ export default class OnboardCollegeScreen extends React.Component{
                 </View>
 
 
-                <View style={{flex: 0.2, flexDirection: 'column', justifyContent:'flex-end', backgroundColor: 'yellow'}}>
+                <View style={{flex: 0.2, flexDirection: 'column', justifyContent:'flex-end'}}>
 
                 <TouchableOpacity style={styles.button}>
                         <Text style={styles.buttonText}>NEXT</Text>
@@ -49,6 +52,7 @@ export default class OnboardCollegeScreen extends React.Component{
 
         </View>
        
+    </LinearGradient>
     );
 
 }
@@ -64,7 +68,6 @@ onbordContainer: {
     flex: 0.3,
     alignItems: 'center',
     justifyContent: 'flex-end',
-    backgroundColor: 'red',
 },  
 
 onboardText: {
@@ -79,7 +82,6 @@ onboardText: {
 formContainer: {
     flex: 0.5,
     flexDirection:'column',
-    backgroundColor: 'blue',
     alignItems: 'center',
     justifyContent: 'center',
 },  
@@ -88,7 +90,6 @@ textInputContainer: {
     flex: 1,
     alignItems:'center',
     justifyContent:'space-evenly',
-    backgroundColor: 'orange', 
 },
 
 textInputStyle: {

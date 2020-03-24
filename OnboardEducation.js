@@ -1,34 +1,39 @@
 
 import * as React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default class OnboardEducationScreen extends React.Component{
     render() {
         return (
+
+        <LinearGradient colors={['#FEB038','#FF39D1']} style={{flex:1}}>
             <View style={styles.container}>
-            <View style={styles.onbordContainer}>
-                <Text style={styles.onboardText} >education</Text>
-            </View>
+                <View style={styles.onbordContainer}>
+                    <Text style={styles.onboardText} >education</Text>
+                </View>
 
-            <View style={styles.formContainer}>
+                <View style={styles.formContainer}>
                 
-            <View style={{flex: 0.5, flexDirection: 'column', justifyContent:'center'}}>
+                <View style={{flex: 0.5, flexDirection: 'column', justifyContent:'center'}}>
 
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>LOGIN</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>REGISTER</Text>
-                </TouchableOpacity>
-            </View>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>LOGIN</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>REGISTER</Text>
+                    </TouchableOpacity>
+                 </View>
                 
                 
 
-            </View>
+                 </View>
 
             
 
-        </View>
+            </View>
+
+        </LinearGradient>
        
     );
 
@@ -45,7 +50,6 @@ onbordContainer: {
     flex: 0.3,
     alignItems: 'center',
     justifyContent: 'flex-end',
-    backgroundColor: 'red',
 },  
 
 onboardText: {
@@ -60,7 +64,6 @@ onboardText: {
 formContainer: {
     flex: 0.5,
     flexDirection:'column',
-    backgroundColor: 'blue',
     alignItems: 'center',
     justifyContent: 'flex-start',
 },  

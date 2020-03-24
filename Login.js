@@ -110,7 +110,7 @@ button: {
 },
 
 buttonText: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Medium',
     fontSize: 18,
     color: 'white',
 }

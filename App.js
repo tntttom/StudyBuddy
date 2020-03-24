@@ -38,14 +38,14 @@ const Stack = createStackNavigator();
 function App()  {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="OnboardCollege">
         <Stack.Screen name ="Welcome" component ={WelcomeScreen} options={{headerShown: false}} />
         <Stack.Screen name ="Register" component={RegisterScreen} options={{headerShown: false}} />
         <Stack.Screen name ="Login" component={LoginScreen} options={{headerShown: false}}/>
-        <Stack.Screen name ="OnboardPersonal" component={OnboardPersonalScreen} />
-        <Stack.Screen name ="OnboardEducation" component={OnboardEducationScreen} />
-        <Stack.Screen name ="OnboardHighSchool" component={OnboardHighSchoolScreen} />
-        <Stack.Screen name ="OnboardCollege" component={OnboardCollegeScreen} />
+        <Stack.Screen name ="OnboardPersonal" component={OnboardPersonalScreen} options={{headerShown: false}}/>
+        <Stack.Screen name ="OnboardEducation" component={OnboardEducationScreen} options={{headerShown: false}}/>
+        <Stack.Screen name ="OnboardHighSchool" component={OnboardHighSchoolScreen} options={{headerShown: false}}/>
+        <Stack.Screen name ="OnboardCollege" component={OnboardCollegeScreen} options={{headerShown: false}}/>
         <Stack.Screen name ="Profile" component={ProfileScreen} />
         <Stack.Screen name ="Home" component={HomeScreen} />
         <Stack.Screen name ="StudyDetails" component={StudyDetailsScreen} />

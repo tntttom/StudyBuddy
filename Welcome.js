@@ -2,12 +2,15 @@
 import * as React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import navigationOptions from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 export default class WelcomeScreen extends React.Component{
 
     render() {
         return (
+
+        <LinearGradient colors={['#F43BD0','#F02323']} style={{flex:1}}>            
             <View style={styles.container}>
                 <View style={styles.welcomeContainer}>
                     <Text style={styles.welcomeText} >welcome</Text>
@@ -24,15 +27,12 @@ export default class WelcomeScreen extends React.Component{
                             <Text style={styles.buttonText}>REGISTER</Text>
                     </TouchableOpacity>
                     </View>
-                    
-                    
-                    
-
+                
                 </View>
 
-                
-
             </View>
+        
+        </LinearGradient>
            
         );
 
@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
         flex: 0.3,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        backgroundColor: 'red',
     },  
 
     welcomeText: {
@@ -66,7 +65,6 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flex: 0.5,
         flexDirection:'column',
-        backgroundColor: 'blue',
         alignItems: 'center',
         justifyContent: 'center',
     },  

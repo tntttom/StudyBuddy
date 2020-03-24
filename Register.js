@@ -1,10 +1,13 @@
 
 import * as React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default class RegisterScreen extends React.Component{
     render() {
         return (
+
+        <LinearGradient colors={['#F43BD0','#F02323']} style={{flex:1}}>
             <View style={styles.container}>
                 <View style={styles.registerContainer}>
                     <Text style={styles.registerText} >register</Text>
@@ -33,7 +36,7 @@ export default class RegisterScreen extends React.Component{
                     </View>
 
 
-                    <View style={{flex: 0.2, flexDirection: 'column', justifyContent:'flex-end', backgroundColor: 'yellow'}}>
+                    <View style={{flex: 0.2, flexDirection: 'column', justifyContent:'flex-end'}}>
 
                     <TouchableOpacity style={styles.button}>
                             <Text style={styles.buttonText}>REGISTER</Text>
@@ -47,6 +50,8 @@ export default class RegisterScreen extends React.Component{
                 
 
             </View>
+
+        </LinearGradient>
            
         );
 
@@ -64,7 +69,6 @@ const styles = StyleSheet.create({
         flex: 0.3,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        backgroundColor: 'red',
     },  
 
     registerText: {
@@ -79,7 +83,6 @@ const styles = StyleSheet.create({
     formContainer: {
         flex: 0.5,
         flexDirection:'column',
-        backgroundColor: 'blue',
         alignItems: 'center',
         justifyContent: 'center',
     },  
@@ -87,8 +90,7 @@ const styles = StyleSheet.create({
     textInputContainer: {
         flex: 1,
         alignItems:'center',
-        justifyContent:'space-evenly',
-        backgroundColor: 'orange', 
+        justifyContent:'space-evenly',  
 
     },
 
