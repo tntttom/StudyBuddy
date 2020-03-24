@@ -38,9 +38,9 @@ const Stack = createStackNavigator();
 function App()  {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="StudyDetails">
-        <Stack.Screen name ="Welcome" component ={WelcomeScreen} />
-        <Stack.Screen name ="Register" component={RegisterScreen} />
+      <Stack.Navigator initialRouteName="Register">
+        <Stack.Screen name ="Welcome" component ={WelcomeScreen} options={{headerShown: false}} />
+        <Stack.Screen name ="Register" component={RegisterScreen} options={{headerShown: false}} />
         <Stack.Screen name ="Login" component={LoginScreen} />
         <Stack.Screen name ="OnboardPersonal" component={OnboardPersonalScreen} />
         <Stack.Screen name ="OnboardEducation" component={OnboardEducationScreen} />
