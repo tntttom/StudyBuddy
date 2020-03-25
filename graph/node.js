@@ -1,49 +1,31 @@
-const HashSet = require('../sets/hash-set');
-
-/**
- * Graph node/vertex that hold adjacencies nodes
- * For performance, uses a HashSet instead of array for adjacents.
- */
 class Node {
+  // Node has a value and an adjacency list of connected nodes
   constructor(value) {
-    this.value = value; // Change to include user data
-    this.adjacents = new HashSet(); // adjacency list
+    this.value = value;
+    this.adjacents = []; // Adjacency List
   }
 
-  /**
-     * Add node to adjacency list
-     * Runtime: O(1)
-     * @param {Node} node
-     */
+  // Add a node to this node's adjacency list
   addAdjacent(node) {
-    this.adjacents.add(node);
+    this.adjacents.push(node);
   }
 
-  /**
-     * Remove node from adjacency list
-     * Runtime: O(1)
-     * @param {Node} node
-     * @returns removed node or `false` if node was not found
-     */
+  // Remove a node from this node's adjacency list
   removeAdjacent(node) {
-    return this.adjacents.delete(node);
+    const index = this.adjacents.indexOf(node);
+    if(index > -1) {
+      this.adjacents.splice(index, 1);
+      return node;
+    }
   }
 
-  /**
-     * Check if a Node is adjacent to other
-     * Runtime: O(1)
-     * @param {Node} node
-     */
-  isAdjacent(node) {
-    return this.adjacents.has(node);
-  }
-
-  /**
-     * Get all adjacent nodes
-     */
+  // Return the adjacent nodes to this node
   getAdjacents() {
-    return Array.from(this.adjacents);
+    return this.adjacents;
+  }
+
+  // Check if this node is adjacent to node
+  isAdjacent(node) {
+    return this.adjacents.indexOf(node) > -1;
   }
 }
-
-module.exports = Node;
