@@ -38,7 +38,8 @@ export default class OnboardPersonalScreen extends React.Component{
 
                 <View style={{flex: 0.2, flexDirection: 'column', justifyContent:'flex-end'}}>
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button}
+                onPress={() => this.props.navigation.navigate('OnboardEducation')}>
                         <Text style={styles.buttonText}>NEXT</Text>
                 </TouchableOpacity>
                 </View>

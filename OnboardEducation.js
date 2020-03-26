@@ -17,11 +17,13 @@ export default class OnboardEducationScreen extends React.Component{
                 
                 <View style={{flex: 0.5, flexDirection: 'column', justifyContent:'center'}}>
 
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>LOGIN</Text>
+                    <TouchableOpacity style={styles.button}
+                    onPress={() => this.props.navigation.navigate('OnboardHighSchool')}>
+                        <Text style={styles.buttonText}>HIGH SCHOOL</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>REGISTER</Text>
+                    <TouchableOpacity style={styles.button}
+                    onPress={() => this.props.navigation.navigate('OnboardCollege')}>
+                        <Text style={styles.buttonText}>COLLEGE/UNIVERSITY</Text>
                     </TouchableOpacity>
                  </View>
                 

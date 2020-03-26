@@ -20,10 +20,12 @@ export default class WelcomeScreen extends React.Component{
 
                     <View style={{flex: 1, flexDirection: 'column', justifyContent:'flex-end'}}>
 
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button}
+                    onPress={() => this.props.navigation.navigate('Login')}>
                             <Text style={styles.buttonText}>LOGIN</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button}
+                    onPress={() => this.props.navigation.navigate('Register')}>
                             <Text style={styles.buttonText}>REGISTER</Text>
                     </TouchableOpacity>
                     </View>
