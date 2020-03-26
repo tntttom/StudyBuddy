@@ -26,6 +26,11 @@ class Node {
 
   // Check if this node is adjacent to node
   isAdjacent(node) {
+    console.log(this.adjacents.indexOf(node) > -1);
     return this.adjacents.indexOf(node) > -1;
   }
 }
+
+module.exports = function(msg) {
+  console.log(msg);
+};
