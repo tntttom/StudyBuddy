@@ -22,16 +22,16 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import WelcomeScreen from './Welcome.js';
-import RegisterScreen from './Register.js';
-import LoginScreen from './Login.js';
-import OnboardPersonalScreen from './OnboardPersonal.js';
-import OnboardEducationScreen from './OnboardEducation.js';
-import OnboardHighSchoolScreen from './OnboardHighSchool.js';
-import OnboardCollegeScreen from './OnboardCollege.js';
-import ProfileScreen from './Profile.js';
-import HomeScreen from './Home.js';
-import StudyDetailsScreen from './StudyDetails.js';
+import WelcomeScreen from './Screens/Welcome.js';
+import RegisterScreen from './Screens/Register.js';
+import LoginScreen from './Screens/Login.js';
+import OnboardPersonalScreen from './Screens/Onboarding/OnboardPersonal.js';
+import OnboardEducationScreen from './Screens/Onboarding/OnboardEducation.js';
+import OnboardHighSchoolScreen from './Screens/Onboarding/OnboardHighSchool.js';
+import OnboardCollegeScreen from './Screens/Onboarding/OnboardCollege.js';
+import ProfileScreen from './Screens/Profile.js';
+import HomeScreen from './Screens/Home.js';
+import StudyDetailsScreen from './Screens/StudyDetails.js';
 
 const Stack = createStackNavigator();
 
