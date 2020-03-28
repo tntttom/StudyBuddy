@@ -1,3 +1,5 @@
+var Node = require('./Node.js');
+
 class Graph {
     // Graph is a Map of nodes, with keys as values of nodes and values as the nodes themselves
     constructor() {
@@ -86,5 +88,20 @@ class Graph {
       
   }
   
-  const graph = new Graph();
-  graph
+const graph = new Graph();
+
+const [first] = graph.addEdge(1, 2);
+graph.addEdge(1, 3);
+graph.addEdge(1, 4);
+graph.addEdge(5, 2);
+graph.addEdge(6, 3);
+graph.addEdge(7, 3);
+graph.addEdge(8, 4);
+graph.addEdge(9, 5);
+graph.addEdge(10, 6);
+
+dfsFromFirst = graph.dfs(first);
+visitedOrder = Array.from(dfsFromFirst);
+const values = visitedOrder.map(node => node.value);
+console.log(values); // [1, 4, 8, 3, 7, 6, 10, 2, 5, 9]
+
