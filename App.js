@@ -13,7 +13,6 @@ import {
 
 import {
   Header,
-  LearnMoreLinks,
   Colors,
   DebugInstructions,
   ReloadInstructions,

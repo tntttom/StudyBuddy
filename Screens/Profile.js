@@ -9,7 +9,7 @@ export default class ProfileScreen extends React.Component{
             <View style={styles.container}>
                 <View style={styles.profileContainer}>
                 <LinearGradient colors={['#FF7EF5', '#41E2FF']} style={{ flex:1,}}>
-                    <View style={{justifyContent:'center', alignContent: 'center', width: Dimensions.get('screen').width, backgroundColor:'yellow'}}>
+                    <View style={{justifyContent:'center', alignContent: 'center', width: Dimensions.get('screen').width, height: Dimensions.get('screen').height}}>
                             
                             <Text style={{textAlign:'center'}}>GRADIENT</Text>
                             
@@ -47,6 +47,10 @@ export default class ProfileScreen extends React.Component{
                             <View style={styles.cardContainer}>
                                 <Text style={styles.cardText}>Calculus</Text>
                             </View>
+
+                            <View style={styles.cardContainer}>
+                                <Text style={styles.cardText}>Biochem</Text>
+                            </View>
                         </ScrollView>
                     </View>
                 </View>
@@ -55,7 +59,24 @@ export default class ProfileScreen extends React.Component{
                     <Text style={styles.headerText}>best study buddies</Text>
 
                     <View style={styles.scrollViewBuddyContainer}>
-                        <ScrollView>
+                        <ScrollView
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}>
+                            <View style={styles.profileCard}>
+                                <Text>Picture</Text>
+                            </View>
+
+                            <View style={styles.profileCard}>
+                                <Text>Picture</Text>
+                            </View>
+
+                            <View style={styles.profileCard}>
+                                <Text>Picture</Text>
+                            </View>
+
+                            <View style={styles.profileCard}>
+                                <Text>Picture</Text>
+                            </View>
                             
                         </ScrollView>
 
@@ -117,11 +138,11 @@ const styles = StyleSheet.create({
     },
 
     buddyContainer: {
-        flex: 0.15,
-        backgroundColor:'blue',
+        flex: .19,
         justifyContent: 'flex-start',
         width: Dimensions.get('window').width,
-        marginTop: 46,
+        marginTop: 64,
+
     },
     
     headerText: {
@@ -132,25 +153,48 @@ const styles = StyleSheet.create({
     },
 
     scrollViewCourseContainer: {
-        
+        height: 130,
         marginTop: 6,
+    },
+    scrollViewBuddyContainer: {
+        marginTop: 6,
+        height: 130,
     },
 
     cardContainer:{
-        backgroundColor:'black',
+        backgroundColor:'white',
         height: 120, 
         width: 120, 
-        marginLeft: 20, 
+        marginLeft: 10, 
+        marginRight: 10,
         alignItems:'center',
-        borderRadius: 18
+        borderRadius: 18,
+        shadowColor: 'black',
+        shadowOpacity: 0.1,
+        shadowOffset: {width: 1, height: 4},
 
     },
 
     cardText: {
-        color: 'white',
+        color: 'black',
         fontFamily: 'Montserrat-Medium',
         fontSize: 14,
         marginTop:20
     },
+
+    profileCard: {
+        width: 120, 
+        height: 120, 
+        borderRadius: 120/2, 
+        justifyContent: 'center', 
+        alignItems: 'center',  
+        backgroundColor:'white',
+        marginLeft: 10,
+        marginRight: 10,
+        shadowColor: 'black',
+        shadowOpacity: 0.1,
+        shadowOffset: {width: 1, height: 4},
+        marginTop: 6,
+    }
     
 })
