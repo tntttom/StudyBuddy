@@ -1,7 +1,7 @@
 
- import 'react-native-gesture-handler';
+import 'react-native-gesture-handler';
 
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -31,25 +31,48 @@ import OnboardCollegeScreen from './Screens/Onboarding/OnboardCollege.js';
 import ProfileScreen from './Screens/Profile.js';
 import HomeScreen from './Screens/Home.js';
 import StudyDetailsScreen from './Screens/StudyDetails.js';
+import LoadingScreen from './Screens/Loading.js';
+import { State } from 'react-native-gesture-handler';
+
+function AppStack() {
+  return (
+    <>
+      <Stack.Screen name ="Home" component={HomeScreen} options={{title:'study', headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32}, }}/>
+      <Stack.Screen name ="Profile" component={ProfileScreen} options={{headerShown:false}}/> 
+      <Stack.Screen name ="StudyDetails" component={StudyDetailsScreen} />
+    </>
+  );
+}
+
+function AuthStack() {
+  return(
+    <>
+      <Stack.Screen name ="Welcome" component ={WelcomeScreen} options={{headerShown: false}} />
+      <Stack.Screen name ="Register" component={RegisterScreen} options={{headerShown: false}} />
+      <Stack.Screen name ="Login" component={LoginScreen} options={{headerShown: false}}/>
+      <Stack.Screen name ="OnboardPersonal" component={OnboardPersonalScreen} options={{headerShown: false}}/>
+      <Stack.Screen name ="OnboardEducation" component={OnboardEducationScreen} options={{headerShown: false}}/>
+      <Stack.Screen name ="OnboardHighSchool" component={OnboardHighSchoolScreen} options={{headerShown: false}}/>
+      <Stack.Screen name ="OnboardCollege" component={OnboardCollegeScreen} options={{headerShown: false}}/>
+    </>
+  );
+}
 
 const Stack = createStackNavigator();
 
 function App()  {
+  const [isLoading, setIsLoading] = useState(true);
+  const [userToken, setUserToken] = useState(null);
+
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name ="Welcome" component ={WelcomeScreen} options={{headerShown: false}} />
-        <Stack.Screen name ="Register" component={RegisterScreen} options={{headerShown: false}} />
-        <Stack.Screen name ="Login" component={LoginScreen} options={{headerShown: false}}/>
-        <Stack.Screen name ="OnboardPersonal" component={OnboardPersonalScreen} options={{headerShown: false}}/>
-        <Stack.Screen name ="OnboardEducation" component={OnboardEducationScreen} options={{headerShown: false}}/>
-        <Stack.Screen name ="OnboardHighSchool" component={OnboardHighSchoolScreen} options={{headerShown: false}}/>
-        <Stack.Screen name ="OnboardCollege" component={OnboardCollegeScreen} options={{headerShown: false}}/>
-        <Stack.Screen name ="Profile" component={ProfileScreen} options={{headerShown:false}}/>
-        <Stack.Screen name ="Home" component={HomeScreen} options={{title:'study', headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32}, }}/>
-        <Stack.Screen name ="StudyDetails" component={StudyDetailsScreen} />
-
-        
+      <Stack.Navigator>
+        {userToken == null ? AuthStack() : AppStack()}        
       </Stack.Navigator>
     </NavigationContainer>
   );
