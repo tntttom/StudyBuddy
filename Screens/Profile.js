@@ -2,19 +2,19 @@ import * as React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, TextInput, Dimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { ScrollView } from 'react-native-gesture-handler';
+import auth from '@react-native-firebase/auth';
 
 export default class ProfileScreen extends React.Component{
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.profileContainer}>
-                <LinearGradient colors={['#FF7EF5', '#41E2FF']} style={{ flex:1,}}>
-                    <View style={{justifyContent:'center', alignContent: 'center', width: Dimensions.get('screen').width, height: Dimensions.get('screen').height}}>
-                            
+                    <LinearGradient colors={['#FF7EF5', '#41E2FF']} style={{ flex:1,}}>
+                        <View style={{justifyContent:'center', alignContent: 'center', width: Dimensions.get('screen').width, height: Dimensions.get('screen').height}}>
+                                
                             <Text style={{textAlign:'center'}}>GRADIENT</Text>
-                            
-                       
-                    </View>
+                        
+                        </View>
                     </LinearGradient>
 
                     <View style={{justifyContent:'flex-end', flex: 0.2}}>
@@ -83,6 +83,18 @@ export default class ProfileScreen extends React.Component{
 
                     </View>
 
+                    <View style={{flex:0.2}}>
+                        <TouchableOpacity style={styles.button}
+                            onPress={() =>
+                                auth()
+                                    .signOut()
+                                    .then(() => console.log('User signed out!'))
+                            
+                            }>
+                            <Text style={styles.buttonText}>LOGOUT</Text>
+                        </TouchableOpacity>
+                    </View>
+
                 </View>
 
             </View>
@@ -138,7 +150,7 @@ const styles = StyleSheet.create({
     },
 
     buddyContainer: {
-        flex: .19,
+        flex: 0.20,
         justifyContent: 'flex-start',
         width: Dimensions.get('window').width,
         marginTop: 64,
@@ -195,6 +207,31 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowOffset: {width: 1, height: 4},
         marginTop: 6,
+    },
+
+    buttonContainer: {
+        flex: 0.15,
+        justifyContent: 'flex-start',
+        alignSelf: 'flex-start',
+        marginBottom: 20
+    },
+
+    button: {
+        width: 350,
+        height: 40,
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: 'black',
+        borderWidth: 1,
+        borderRadius: 20,
+        margin: 10,
+    },
+
+    buttonText: {
+        fontFamily: 'Montserrat-Medium',
+        fontSize: 18,
+        color: 'black',
     }
     
 })

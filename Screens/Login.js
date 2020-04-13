@@ -3,8 +3,17 @@
 import * as React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import auth from '@react-native-firebase/auth';
 
 export default class LoginScreen extends React.Component{
+    constructor(props) {
+        super(props)
+        this.state = {
+            email: '',
+            password: '',
+        }
+    }
+    
     render() {
         return (
             <LinearGradient colors={['#F43BD0','#F02323']} style={{flex:1}}>
@@ -19,11 +28,16 @@ export default class LoginScreen extends React.Component{
         
                         <TextInput style={styles.textInputStyle}
                         placeholderTextColor = "white"
-                        placeholder="username"/>
+                        placeholder="email"
+                        onChangeText={(text) => this.setState({ email: text })}
+                        />
 
                         <TextInput style={styles.textInputStyle}
                         placeholderTextColor = "white"
-                        placeholder="password"/>
+                        placeholder="password"
+                        secureTextEntry={true}
+                        onChangeText={(text) => this.setState({ password: text })}
+                        />
 
                     </View>
 
@@ -31,7 +45,24 @@ export default class LoginScreen extends React.Component{
                     <View style={{flex: 0.2, flexDirection: 'column', justifyContent:'flex-end'}}>
 
                     <TouchableOpacity style={styles.button}
-                    onPress={() => this.props.navigation.navigate('Profile')}>
+                    onPress={() => 
+                        auth()
+                            .signInWithEmailAndPassword(this.state.email,this.state.password)
+                            .then(() => {
+                                console.log('User account created & signed in!');
+                            })
+                            .catch(error => {
+                                if (error.code === 'auth/email-already-in-use') {
+                                console.log('That email address is already in use!');
+                                }
+
+                                if (error.code === 'auth/invalid-email') {
+                                console.log('That email address is invalid!');
+                                }
+
+                                console.error(error);
+                            })
+                        }>
                         <Text style={styles.buttonText}>GO!</Text>
                     </TouchableOpacity>
                     </View>

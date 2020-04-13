@@ -23,8 +23,8 @@ import auth from '@react-native-firebase/auth';
 function AppStack() {
   return (
     <>
-      <Stack.Screen name ="Home" component={HomeScreen} options={{title:'study', headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32}, }}/>
       <Stack.Screen name ="Profile" component={ProfileScreen} options={{headerShown:false}}/> 
+      <Stack.Screen name ="Home" component={HomeScreen} options={{title:'study', headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32}, }}/>
       <Stack.Screen name ="StudyDetails" component={StudyDetailsScreen} />
     </>
   );

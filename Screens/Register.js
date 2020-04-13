@@ -1,9 +1,20 @@
 
-import * as React from 'react';
+import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import auth from '@react-native-firebase/auth';
 
 export default class RegisterScreen extends React.Component{
+    constructor(props) {
+        super(props)
+        this.state = {
+            username: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
+        }
+    }
+    
     render() {
         return (
 
@@ -18,20 +29,30 @@ export default class RegisterScreen extends React.Component{
                     <View style={styles.textInputContainer}>
             
                         <TextInput style={styles.textInputStyle}
-                        placeholderTextColor = "white"
-                        placeholder="username"/>
+                            placeholderTextColor = "white"
+                            placeholder="username"
+                            onChangeText={text => this.setState({ username: text })}
+                        />
 
                         <TextInput style={styles.textInputStyle}
-                        placeholderTextColor = "white"
-                        placeholder="email"/>
+                            placeholderTextColor = "white"
+                            placeholder="email"
+                            onChangeText={text => this.setState({ email: text })}
+                        />
 
                         <TextInput style={styles.textInputStyle}
-                        placeholderTextColor = "white"
-                        placeholder="password"/>
+                            placeholderTextColor = "white"
+                            placeholder="password"
+                            secureTextEntry={true}
+                            onChangeText={text => this.setState({ password: text })}
+                        />
                         
                         <TextInput style={styles.textInputStyle}
-                        placeholderTextColor = "white"
-                        placeholder="confirm password"/>
+                            placeholderTextColor = "white"
+                            placeholder="confirm password"
+                            secureTextEntry={true}
+                            onChangeText={text => this.setState({ confirmPassword: text })}
+                        />
 
                     </View>
 
@@ -39,16 +60,31 @@ export default class RegisterScreen extends React.Component{
                     <View style={{flex: 0.2, flexDirection: 'column', justifyContent:'flex-end'}}>
 
                     <TouchableOpacity style={styles.button}
-                    onPress={() => this.props.navigation.navigate('OnboardPersonal')}>
+                    onPress={() => 
+                        auth()
+                            .createUserWithEmailAndPassword(this.state.email, this.state.password)
+                            .then(() => {
+                                console.log('User account created & signed in!');
+                            })
+                            .catch(error => {
+                                if (error.code === 'auth/email-already-in-use') {
+                                console.log('That email address is already in use!');
+                                }
+
+                                if (error.code === 'auth/invalid-email') {
+                                console.log('That email address is invalid!');
+                                }
+
+                                console.error(error);
+
+                                this.props.navigation.navigate('OnboardPersonal')
+                        })
+                    }>
                             <Text style={styles.buttonText}>REGISTER</Text>
                     </TouchableOpacity>
                     </View>
-                    
-                    
 
                 </View>
-
-                
 
             </View>
 
