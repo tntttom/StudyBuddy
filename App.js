@@ -1,22 +1,7 @@
 
 import 'react-native-gesture-handler';
 
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
-
-import {
-  Header,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import React, {useState, useEffect} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -32,7 +17,8 @@ import ProfileScreen from './Screens/Profile.js';
 import HomeScreen from './Screens/Home.js';
 import StudyDetailsScreen from './Screens/StudyDetails.js';
 import LoadingScreen from './Screens/Loading.js';
-import { State } from 'react-native-gesture-handler';
+
+import auth from '@react-native-firebase/auth';
 
 function AppStack() {
   return (
@@ -62,7 +48,17 @@ const Stack = createStackNavigator();
 
 function App()  {
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState(null);
+  const [userToken, setUserToken] = useState();
+
+  function onAuthStateChanged(userToken) {
+    setUserToken(userToken);
+    if (isLoading) setIsLoading(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
 
   if (isLoading) {
