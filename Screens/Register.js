@@ -59,29 +59,36 @@ export default class RegisterScreen extends React.Component{
 
                     <View style={{flex: 0.2, flexDirection: 'column', justifyContent:'flex-end'}}>
 
-                    <TouchableOpacity style={styles.button}
-                    onPress={() => 
-                        auth()
-                            .createUserWithEmailAndPassword(this.state.email, this.state.password)
-                            .then(() => {
-                                console.log('User account created & signed in!');
-                            })
-                            .catch(error => {
-                                if (error.code === 'auth/email-already-in-use') {
-                                console.log('That email address is already in use!');
-                                }
-
-                                if (error.code === 'auth/invalid-email') {
-                                console.log('That email address is invalid!');
-                                }
-
-                                console.error(error);
-
-                                this.props.navigation.navigate('OnboardPersonal')
-                        })
-                    }>
-                            <Text style={styles.buttonText}>REGISTER</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity style={styles.button}
+                        onPress={() => {
+                            if (this.state.password != this.state.confirmPassword) {
+                                alert('Passwords do no match')
+                            }
+                            else {
+                                auth()
+                                    .createUserWithEmailAndPassword(this.state.email, this.state.password)
+                                    .then(() => {
+                                        console.log('User account created & signed in!');
+                                    })
+                                    .catch(error => {
+                                        if (error.code === 'auth/email-already-in-use') {
+                                        alert('An account is already associated with this email address.');
+                                        }
+                                        else if (error.code === 'auth/invalid-email') {
+                                        alert('That email address is invalid.');
+                                        }
+                                        else if (error.code === 'auth/weak-password') {
+                                            alert('Password must be at least 6 characters long.')
+                                        }
+                                        else alert(error.message);
+                                        
+                                        console.log(error);
+                                })
+                            }
+                        }}>
+                        
+                                <Text style={styles.buttonText}>REGISTER</Text>
+                        </TouchableOpacity>
                     </View>
 
                 </View>

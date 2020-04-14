@@ -12,7 +12,7 @@ export default class ProfileScreen extends React.Component{
                     <LinearGradient colors={['#FF7EF5', '#41E2FF']} style={{ flex:1,}}>
                         <View style={{justifyContent:'center', alignContent: 'center', width: Dimensions.get('screen').width, height: Dimensions.get('screen').height}}>
                                 
-                            <Text style={{textAlign:'center'}}>GRADIENT</Text>
+                            {/* <Text style={{textAlign:'center'}}>GRADIENT</Text> */}
                         
                         </View>
                     </LinearGradient>

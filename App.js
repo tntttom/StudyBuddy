@@ -20,9 +20,24 @@ import LoadingScreen from './Screens/Loading.js';
 
 import auth from '@react-native-firebase/auth';
 
-function AppStack() {
+function OnboardStack(isNewAccount) {
+  if (isNewAccount) {
+    return (
+      <>
+        <Stack.Screen name ="OnboardPersonal" component={OnboardPersonalScreen} options={{headerShown: false}}/>
+        <Stack.Screen name ="OnboardEducation" component={OnboardEducationScreen} options={{headerShown: false}}/>
+        <Stack.Screen name ="OnboardHighSchool" component={OnboardHighSchoolScreen} options={{headerShown: false}}/>
+        <Stack.Screen name ="OnboardCollege" component={OnboardCollegeScreen} options={{headerShown: false}}/>
+      </>
+    );
+  }
+}
+
+function AppStack(isNewAccount) {
+
   return (
     <>
+      {OnboardStack(isNewAccount)}
       <Stack.Screen name ="Profile" component={ProfileScreen} options={{headerShown:false}}/> 
       <Stack.Screen name ="Home" component={HomeScreen} options={{title:'study', headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32}, }}/>
       <Stack.Screen name ="StudyDetails" component={StudyDetailsScreen} />
@@ -36,10 +51,6 @@ function AuthStack() {
       <Stack.Screen name ="Welcome" component ={WelcomeScreen} options={{headerShown: false}} />
       <Stack.Screen name ="Register" component={RegisterScreen} options={{headerShown: false}} />
       <Stack.Screen name ="Login" component={LoginScreen} options={{headerShown: false}}/>
-      <Stack.Screen name ="OnboardPersonal" component={OnboardPersonalScreen} options={{headerShown: false}}/>
-      <Stack.Screen name ="OnboardEducation" component={OnboardEducationScreen} options={{headerShown: false}}/>
-      <Stack.Screen name ="OnboardHighSchool" component={OnboardHighSchoolScreen} options={{headerShown: false}}/>
-      <Stack.Screen name ="OnboardCollege" component={OnboardCollegeScreen} options={{headerShown: false}}/>
     </>
   );
 }
@@ -49,6 +60,7 @@ const Stack = createStackNavigator();
 function App()  {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState();
+  const [isNewAccount, setIsNewAccount] = useState(false);
 
   function onAuthStateChanged(userToken) {
     setUserToken(userToken);
@@ -68,7 +80,7 @@ function App()  {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {userToken == null ? AuthStack() : AppStack()}        
+        {userToken == null ? AuthStack() : AppStack(isNewAccount)}        
       </Stack.Navigator>
     </NavigationContainer>
   );

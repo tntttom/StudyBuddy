@@ -4,12 +4,22 @@ import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient';
 
 export default class OnboardPersonalScreen extends React.Component{
+    constructor(props) {
+        super(props)
+        this.state = {
+            name: '',
+            phoneNumber: '',
+            birthday: '',
+            gender: '',
+        }
+    }
+    
     render() {
         return (
 
         <LinearGradient colors={['#F02535','#FFB339']} style={{flex:1}}>        
             <View style={styles.container}>
-            <View style={styles.onbordContainer}>
+            <View style={styles.onboardContainer}>
                 <Text style={styles.onboardText} >tell us about yourself</Text>
             </View>
 
@@ -19,32 +29,47 @@ export default class OnboardPersonalScreen extends React.Component{
         
                     <TextInput style={styles.textInputStyle}
                     placeholderTextColor = "white"
-                    placeholder="name"/>
+                    placeholder="name"
+                    onChangeText={(text) => this.setState({ name: text })}
+                    />
 
                     <TextInput style={styles.textInputStyle}
                     placeholderTextColor = "white"
-                    placeholder="phone number"/>
+                    placeholder="phone number"
+                    onChangeText={(text) => this.setState({ phoneNumber: text })}
+                    />
 
                     <TextInput style={styles.textInputStyle}
                     placeholderTextColor = "white"
-                    placeholder="birthday"/>
+                    placeholder="birthday"
+                    onChangeText={(text) => this.setState({ birthday: text })}
+                    />
 
                     <TextInput style={styles.textInputStyle}
                     placeholderTextColor = "white"
-                    placeholder="gender"/>
+                    placeholder="gender"
+                    onChangeText={(text) => this.setState({ gender: text })}
+                    />
 
                 </View>
 
 
                 <View style={{flex: 0.2, flexDirection: 'column', justifyContent:'flex-end'}}>
-
-                <TouchableOpacity style={styles.button}
-                onPress={() => this.props.navigation.navigate('OnboardEducation')}>
-                        <Text style={styles.buttonText}>NEXT</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.button}
+                    onPress={() => {
+                        let name = this.state.name;
+                        let phoneNumber = this.state.phoneNumber;
+                        let birthday = this.state.birthday;
+                        let gender = this.state.gender;
+                        if (name == '' || phoneNumber == '' || birthday == '' || gender == '')
+                            alert('Please fill out all fields');    
+                        else
+                            this.props.navigation.navigate('OnboardEducation');
+                        
+                    }}>
+                            <Text style={styles.buttonText}>NEXT</Text>
+                    </TouchableOpacity>
                 </View>
-                
-                
 
             </View>
 
@@ -65,11 +90,10 @@ const styles = StyleSheet.create({
 container: {
     flex: 1
 },
-onbordContainer: {
+onboardContainer: {
     flex: 0.3,
     alignItems: 'center',
     justifyContent: 'flex-end',
-    backgroundColor: 'red',
 },  
 
 onboardText: {

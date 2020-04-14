@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     },  
 
     welcomeText: {
-        flex: 0.5,
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-end',
         marginTop: 170,
