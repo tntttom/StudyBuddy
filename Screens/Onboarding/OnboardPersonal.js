@@ -7,10 +7,10 @@ export default class OnboardPersonalScreen extends React.Component{
     constructor(props) {
         super(props)
         this.state = {
-            name: '',
-            phoneNumber: '',
-            birthday: '',
-            gender: '',
+            name: 'f',
+            phoneNumber: 'f',
+            birthday: 'f',
+            gender: 'f',
         }
     }
     
@@ -29,7 +29,7 @@ export default class OnboardPersonalScreen extends React.Component{
         
                     <TextInput style={styles.textInputStyle}
                     placeholderTextColor = "white"
-                    placeholder="name"
+                    placeholder="full name"
                     onChangeText={(text) => this.setState({ name: text })}
                     />
 
@@ -64,7 +64,7 @@ export default class OnboardPersonalScreen extends React.Component{
                         if (name == '' || phoneNumber == '' || birthday == '' || gender == '')
                             alert('Please fill out all fields');    
                         else
-                            this.props.navigation.navigate('OnboardEducation');
+                            this.props.navigation.navigate('OnboardCollege', this.state);
                         
                     }}>
                             <Text style={styles.buttonText}>NEXT</Text>

@@ -9,8 +9,8 @@ export default class LoginScreen extends React.Component{
     constructor(props) {
         super(props)
         this.state = {
-            email: '',
-            password: '',
+            email: 'jamesgamilla1998@gmail.com',
+            password: 'Password',
         }
     }
     
@@ -65,7 +65,7 @@ export default class LoginScreen extends React.Component{
                                         alert('This account has been disabled.');
                                     }
                                     else alert(error.message);
-                                    
+
                                     console.log(error);
                                 })
                             }>

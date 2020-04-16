@@ -20,8 +20,10 @@ import LoadingScreen from './Screens/Loading.js';
 
 import auth from '@react-native-firebase/auth';
 
-function OnboardStack(isNewAccount) {
-  if (isNewAccount) {
+import SampleDatabase from './data/SampleDatabase.json';
+
+function OnboardStack(isAccountNew) {
+  if (isAccountNew) {
     return (
       <>
         <Stack.Screen name ="OnboardPersonal" component={OnboardPersonalScreen} options={{headerShown: false}}/>
@@ -33,11 +35,24 @@ function OnboardStack(isNewAccount) {
   }
 }
 
-function AppStack(isNewAccount) {
+function AppStack(userToken) {
+  const data = SampleDatabase;
+
+  function isAccountNew(email) {
+    let isAccountNew = true;
+
+    data.users.map((user) => {
+      if (user.email == email && user.completeAccount) {
+        isAccountNew = false;
+      }
+    })
+    
+    return isAccountNew;
+  }
 
   return (
     <>
-      {OnboardStack(isNewAccount)}
+      {OnboardStack( isAccountNew(userToken.email) )}
       <Stack.Screen name ="Profile" component={ProfileScreen} options={{headerShown:false}}/> 
       <Stack.Screen name ="Home" component={HomeScreen} options={{title:'study', headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32}, }}/>
       <Stack.Screen name ="StudyDetails" component={StudyDetailsScreen} />
@@ -60,7 +75,6 @@ const Stack = createStackNavigator();
 function App()  {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState();
-  const [isNewAccount, setIsNewAccount] = useState(false);
 
   function onAuthStateChanged(userToken) {
     setUserToken(userToken);
@@ -80,7 +94,7 @@ function App()  {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {userToken == null ? AuthStack() : AppStack(isNewAccount)}        
+        {userToken == null ? AuthStack() : AppStack(userToken)}        
       </Stack.Navigator>
     </NavigationContainer>
   );

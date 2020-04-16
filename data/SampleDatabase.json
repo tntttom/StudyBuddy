@@ -1,0 +1,32 @@
+{
+  "users" : [
+    {
+      "birthday" : "05-01-1998",
+      "education" : {
+        "graduationYear" : 2020,
+        "location" : "Chicago, IL",
+        "major" : "Biomedical Engineering",
+        "schoolName" : "Loyola University Chicago"
+      },
+      "email" : "jamesgamilla1998@gmail.com",
+      "gender" : "Male",
+      "name" : "James Gamilla",
+      "phoneNumber" : "331-457-2484",
+      "completeAccount" : false
+    },
+    {
+      "birthday" : "MM-DD-YYYY",
+      "education" : {
+        "graduationYear" : 2000,
+        "location" : "Chicago, IL",
+        "major" : "Software Engineering",
+        "schoolName" : "Loyola University Chicago"
+      },
+      "email" : "nhayward@luc.edu",
+      "gender" : "Male",
+      "name" : "Nicholas Hayward",
+      "phoneNumber" : "012-345-6789",
+      "completeAccount" : false
+    }
+  ]
+}

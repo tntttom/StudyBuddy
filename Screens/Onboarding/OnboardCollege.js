@@ -4,7 +4,39 @@ import * as React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
+import SampleDatabase from '../../data/SampleDatabase.json';
+
 export default class OnboardCollegeScreen extends React.Component{
+    
+    constructor(props) {
+        super(props)
+        this.state = {
+            schoolName: 'f',
+            major: 'f',
+            graduationYear: 'f',
+            location: 'f',
+        }
+    } 
+
+    componentDidMount() {
+        const { params } = this.props.route;
+
+        this.state = {
+            name: params.name,
+            phoneNumber: params.phoneNumber,
+            birthday: params.birthday,
+            gender: params.gender,
+            schoolName: this.state.schoolName,
+            major: this.state.major,
+            graduationYear: this.state.graduationYear,
+            location: this.state.location,
+        };
+    }
+    
+    addUser() {
+        // Implement once react-native-firebase/database is added
+    }
+
     render() {
         return (
 
@@ -20,19 +52,27 @@ export default class OnboardCollegeScreen extends React.Component{
         
                     <TextInput style={styles.textInputStyle}
                     placeholderTextColor = "white"
-                    placeholder="school name"/>
+                    placeholder="school name"
+                    onChangeText={text => this.setState({schoolName: text})}
+                    />
 
                     <TextInput style={styles.textInputStyle}
                     placeholderTextColor = "white"
-                    placeholder="major"/>
+                    placeholder="major"
+                    onChangeText={text => this.setState({major: text})}
+                    />
 
                     <TextInput style={styles.textInputStyle}
                     placeholderTextColor = "white"
-                    placeholder="graduation year"/>
+                    placeholder="graduation year"
+                    onChangeText={text => this.setState({graduationYear: text})}
+                    />
 
                     <TextInput style={styles.textInputStyle}
                     placeholderTextColor = "white"
-                    placeholder="standing"/>
+                    placeholder="location"
+                    onChangeText={text => this.setState({location: text})}
+                    />
 
                 </View>
 
@@ -40,8 +80,10 @@ export default class OnboardCollegeScreen extends React.Component{
                 <View style={{flex: 0.2, flexDirection: 'column', justifyContent:'flex-end'}}>
 
                 <TouchableOpacity style={styles.button}
-                onPress={() => this.props.navigation.navigate('Profile')}>
-                        <Text style={styles.buttonText}>NEXT</Text>
+                onPress={() => {
+                    this.props.navigation.navigate('Profile');
+                }}>
+                        <Text style={styles.buttonText}>COMPLETE REGISTRATION</Text>
                 </TouchableOpacity>
                 </View>
                 
