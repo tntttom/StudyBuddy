@@ -4,7 +4,8 @@ import * as React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import SampleDatabase from '../../data/SampleDatabase.json';
+import auth from '@react-native-firebase/auth';
+import dbRefs from '../../api/firebase-database';
 
 export default class OnboardCollegeScreen extends React.Component{
     
@@ -81,7 +82,15 @@ export default class OnboardCollegeScreen extends React.Component{
 
                 <TouchableOpacity style={styles.button}
                 onPress={() => {
-                    this.props.navigation.navigate('Profile');
+                    console.log(auth().currentUser.uid);
+                    dbRefs.users.child(auth().currentUser.uid).child('isNewUser').set(false)
+                    .then(() => {
+                        console.log('Completed registration.');
+                        this.props.navigation.navigate('Profile');
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
                 }}>
                         <Text style={styles.buttonText}>COMPLETE REGISTRATION</Text>
                 </TouchableOpacity>

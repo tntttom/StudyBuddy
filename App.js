@@ -19,11 +19,11 @@ import StudyDetailsScreen from './Screens/StudyDetails.js';
 import LoadingScreen from './Screens/Loading.js';
 
 import auth from '@react-native-firebase/auth';
+import dbRefs from './api/firebase-database.js';
+import { Value } from 'react-native-reanimated';
 
-import SampleDatabase from './data/SampleDatabase.json';
-
-function OnboardStack(isAccountNew) {
-  if (isAccountNew) {
+function AppStack(isNewUser) {
+  if (isNewUser == 'true' || isNewUser == null || isNewUser == 'undefined') {
     return (
       <>
         <Stack.Screen name ="OnboardPersonal" component={OnboardPersonalScreen} options={{headerShown: false}}/>
@@ -33,31 +33,15 @@ function OnboardStack(isAccountNew) {
       </>
     );
   }
-}
-
-function AppStack(userToken) {
-  const data = SampleDatabase;
-
-  function isAccountNew(email) {
-    let isAccountNew = true;
-
-    data.users.map((user) => {
-      if (user.email == email && user.completeAccount) {
-        isAccountNew = false;
-      }
-    })
-    
-    return isAccountNew;
+  else {
+    return (
+      <>
+        <Stack.Screen name ="Profile" component={ProfileScreen} options={{headerShown:false}}/> 
+        <Stack.Screen name ="Home" component={HomeScreen} options={{title:'study', headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32}, }}/>
+        <Stack.Screen name ="StudyDetails" component={StudyDetailsScreen} />
+      </>
+    );
   }
-
-  return (
-    <>
-      {OnboardStack( isAccountNew(userToken.email) )}
-      <Stack.Screen name ="Profile" component={ProfileScreen} options={{headerShown:false}}/> 
-      <Stack.Screen name ="Home" component={HomeScreen} options={{title:'study', headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32}, }}/>
-      <Stack.Screen name ="StudyDetails" component={StudyDetailsScreen} />
-    </>
-  );
 }
 
 function AuthStack() {
@@ -75,10 +59,21 @@ const Stack = createStackNavigator();
 function App()  {
   const [isLoading, setIsLoading] = useState(true);
   const [userToken, setUserToken] = useState();
+  const [isNewUser, setIsNewUser] = useState(true);
 
   function onAuthStateChanged(userToken) {
     setUserToken(userToken);
     if (isLoading) setIsLoading(false);
+  }
+
+  // console.log(userToken);
+  if (userToken != null) {
+    // console.log('UID = ' + userToken.uid);
+    dbRefs.users.child(userToken.uid).child('/isNewUser').on('value', (snapshot) => {
+      console.log('Retrieved isNewUser value is ' + JSON.stringify(snapshot));
+      setIsNewUser(JSON.stringify(snapshot));
+      console.log('isNewUser state changed to ' + isNewUser);
+    })
   }
 
   useEffect(() => {
@@ -86,19 +81,18 @@ function App()  {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-
   if (isLoading) {
     return <LoadingScreen />;
   }
 
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {userToken == null ? AuthStack() : AppStack(userToken)}        
+        {(userToken == null) ? AuthStack() : AppStack(isNewUser)}        
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
-
 
 export default App;

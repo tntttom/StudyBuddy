@@ -12,7 +12,7 @@
       "gender" : "Male",
       "name" : "James Gamilla",
       "phoneNumber" : "331-457-2484",
-      "completeAccount" : false
+      "completeAccount" : true
     },
     {
       "birthday" : "MM-DD-YYYY",
