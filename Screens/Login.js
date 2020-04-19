@@ -1,7 +1,7 @@
 
 
 import * as React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, TextInput, Alert} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 
@@ -9,8 +9,8 @@ export default class LoginScreen extends React.Component{
     constructor(props) {
         super(props)
         this.state = {
-            email: 'jamesgamilla1998@gmail.com',
-            password: 'password',
+            email: '',
+            password: '',
         }
     }
     
@@ -53,18 +53,18 @@ export default class LoginScreen extends React.Component{
                                 })
                                 .catch(error => {
                                     if (error.code === 'auth/user-not-found') {
-                                        alert('There is no account associated with this email address. Please register for an account.');
+                                        Alert.alert('User Not Found','There is no account associated with this email address. Please register for an account.');
                                     }
                                     else if (error.code === 'auth/invalid-email') {
-                                        alert('That email address is invalid.');
+                                        Alert.alert('Invalid Email','That email address is invalid.');
                                     }
                                     else if (error.code === 'auth/wrong-password') {
-                                        alert('Wrong password!');
+                                        Alert.alert('Wrong Password','Please try again.');
                                     } 
                                     else if (error.code === 'auth/user-disabled') {
-                                        alert('This account has been disabled.');
+                                        Alert.alert('Account Disabled','This account has been disabled.');
                                     }
-                                    else alert(error.message);
+                                    else Alert.alert(error,error.message);
 
                                     console.log(error);
                                 })

@@ -1,8 +1,8 @@
 
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, TextInput, Alert} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import auth, { firebase } from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 
 import dbRefs from '../api/firebase-database.js';
 
@@ -10,10 +10,10 @@ export default class RegisterScreen extends React.Component{
     constructor(props) {
         super(props)
         this.state = {
-            username: 'JamesG1998',
-            email: 'jamesgamilla1998@gmail.com',
-            password: 'password',
-            confirmPassword: 'password'
+            username: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
         }
     }
     
@@ -65,7 +65,7 @@ export default class RegisterScreen extends React.Component{
                         onPress={() => {
                             
                             if (this.state.password != this.state.confirmPassword) {
-                                alert('Passwords do no match')
+                                Alert.alert('Passwords do no match')
                             }
                             else {
                                 auth()
@@ -88,16 +88,16 @@ export default class RegisterScreen extends React.Component{
                                     })
                                     .catch(error => {
                                         if (error.code === 'auth/email-already-in-use') {
-                                        alert('An account is already associated with this email address.');
+                                            Alert.alert('Existing Account','An account is already associated with this email address.');
                                         }
                                         else if (error.code === 'auth/invalid-email') {
-                                        alert('That email address is invalid.');
+                                            Alert.alert('Invalid Email','That email address is invalid.');
                                         }
                                         else if (error.code === 'auth/weak-password') {
-                                            alert('Password must be at least 6 characters long.')
-                                        }
-                                        // else alert(error.message);
-                                        
+                                            Alert.alert('Weak Password','Password must be at least 6 characters long.')
+                                        }              
+                                        else Alert.alert(error,error.message);
+                                                                  
                                         console.log(error);
                                 });
                             }

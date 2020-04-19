@@ -5,6 +5,17 @@ import { ScrollView } from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 
 export default class ProfileScreen extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: null,
+        }
+    }
+
+    componentDidMount() {
+        this.state.user = auth().currentUser;
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -89,7 +100,6 @@ export default class ProfileScreen extends React.Component{
                                 auth()
                                     .signOut()
                                     .then(() => console.log('User signed out!'))
-                            
                             }>
                             <Text style={styles.buttonText}>LOGOUT</Text>
                         </TouchableOpacity>

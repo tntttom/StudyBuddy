@@ -1,7 +1,7 @@
 
 
 import * as React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, TextInput, Alert} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import auth from '@react-native-firebase/auth';
@@ -18,36 +18,22 @@ export default class OnboardCollegeScreen extends React.Component{
             location: '',
         }
     } 
-
-    componentDidMount() {
-        const { params } = this.props.route;
-
-        this.state = {
-            name: params.name,
-            phoneNumber: params.phoneNumber,
-            birthday: params.birthday,
-            gender: params.gender,
+    
+    addUserProfile() {
+        dbRefs.users.child(auth().currentUser.uid).child('profile').update({
             schoolName: this.state.schoolName,
             major: this.state.major,
             graduationYear: this.state.graduationYear,
-            location: this.state.location,
-        };
-    }
-    
-    addUserProfile() {
-        dbRefs.users.child(auth().currentUser.uid).update({
-            isNewUser: false,
-            profile: {
-                name: this.state.name,
-                phoneNumber: this.state.phoneNumber,
-                birthday: this.state.birthday,
-                gender: this.state.gender,
-                schoolName: this.state.schoolName,
-                major: this.state.major,
-                graduationYear: this.state.graduationYear,
-                location: this.state.location
-            }
+            location: this.state.location
         })
+        .then(() => {
+            console.log('Updated user profile.');
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+
+        dbRefs.users.child(auth().currentUser.uid).update({isNewUser: false})
         .then(() => {
             console.log('Completed registration.');
         })
@@ -62,11 +48,11 @@ export default class OnboardCollegeScreen extends React.Component{
         let graduationYear = this.state.graduationYear;
         let location = this.state.location;
         if (schoolName == '' || major == '' || graduationYear == '' || location == '') {
-            alert('Please fill out all fields');
+            Alert.alert('Incomplete Form','Please fill out all fields');
             return false; 
         }
         if (graduationYear.length != 4 || isNaN(graduationYear)) {
-            alert('Graduation year must be 4 digits long (e.g. 2020)');
+            Alert.alert('Invalid Graduation Year','Graduation year must be 4 digits long (e.g. 2020)');
             return false;
         }
         return true;

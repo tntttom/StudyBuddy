@@ -1,7 +1,10 @@
 
 import * as React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, TextInput, Alert} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+
+import auth from '@react-native-firebase/auth';
+import dbRefs from '../../api/firebase-database';
 
 export default class OnboardPersonalScreen extends React.Component{
     constructor(props) {
@@ -13,6 +16,21 @@ export default class OnboardPersonalScreen extends React.Component{
             gender: '',
         }
     }
+
+    addUserProfile() {
+        dbRefs.users.child(auth().currentUser.uid).child('profile').update({
+            name: this.state.name,
+            phoneNumber: this.state.phoneNumber,
+            birthday: this.state.birthday,
+            gender: this.state.gender,
+        })
+        .then(() => {
+            console.log('Updated user profile.');
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
     
     validateFields() {
         let name = this.state.name;
@@ -20,11 +38,11 @@ export default class OnboardPersonalScreen extends React.Component{
         let birthday = this.state.birthday;
         let gender = this.state.gender;
         if (name == '' || phoneNumber == '' || birthday == '' || gender == '') {
-            alert('Please fill out all fields');
+            Alert.alert('Incomplete Form','Please fill out all fields');
             return false; 
         }
         if (phoneNumber.length != 10 || isNaN(phoneNumber)) {
-            alert('Phone number must be 10 digits long (e.g. 012345789)');
+            Alert.alert('Invalid Phone Number','Phone number must be 10 digits long (e.g. 012345789)');
             return false;
         }
         return true;
@@ -75,7 +93,8 @@ export default class OnboardPersonalScreen extends React.Component{
                     <TouchableOpacity style={styles.button}
                     onPress={() => {
                         if (this.validateFields()) {
-                            this.props.navigation.navigate('OnboardCollege', this.state);
+                            this.addUserProfile();
+                            this.props.navigation.navigate('OnboardCollege');
                         }
                     }}>
                             <Text style={styles.buttonText}>NEXT</Text>
