@@ -66,13 +66,9 @@ function App()  {
     if (isLoading) setIsLoading(false);
   }
 
-  // console.log(userToken);
   if (userToken != null) {
-    // console.log('UID = ' + userToken.uid);
     dbRefs.users.child(userToken.uid).child('/isNewUser').on('value', (snapshot) => {
-      console.log('Retrieved isNewUser value is ' + JSON.stringify(snapshot));
       setIsNewUser(JSON.stringify(snapshot));
-      console.log('isNewUser state changed to ' + isNewUser);
     })
   }
 

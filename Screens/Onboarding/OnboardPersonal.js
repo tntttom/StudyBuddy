@@ -7,13 +7,29 @@ export default class OnboardPersonalScreen extends React.Component{
     constructor(props) {
         super(props)
         this.state = {
-            name: 'f',
-            phoneNumber: 'f',
-            birthday: 'f',
-            gender: 'f',
+            name: '',
+            phoneNumber: '',
+            birthday: '',
+            gender: '',
         }
     }
     
+    validateFields() {
+        let name = this.state.name;
+        let phoneNumber = this.state.phoneNumber;
+        let birthday = this.state.birthday;
+        let gender = this.state.gender;
+        if (name == '' || phoneNumber == '' || birthday == '' || gender == '') {
+            alert('Please fill out all fields');
+            return false; 
+        }
+        if (phoneNumber.length != 10 || isNaN(phoneNumber)) {
+            alert('Phone number must be 10 digits long (e.g. 012345789)');
+            return false;
+        }
+        return true;
+    }
+
     render() {
         return (
 
@@ -36,6 +52,7 @@ export default class OnboardPersonalScreen extends React.Component{
                     <TextInput style={styles.textInputStyle}
                     placeholderTextColor = "white"
                     placeholder="phone number"
+                    keyboardType='number-pad'
                     onChangeText={(text) => this.setState({ phoneNumber: text })}
                     />
 
@@ -57,15 +74,9 @@ export default class OnboardPersonalScreen extends React.Component{
                 <View style={{flex: 0.2, flexDirection: 'column', justifyContent:'flex-end'}}>
                     <TouchableOpacity style={styles.button}
                     onPress={() => {
-                        let name = this.state.name;
-                        let phoneNumber = this.state.phoneNumber;
-                        let birthday = this.state.birthday;
-                        let gender = this.state.gender;
-                        if (name == '' || phoneNumber == '' || birthday == '' || gender == '')
-                            alert('Please fill out all fields');    
-                        else
+                        if (this.validateFields()) {
                             this.props.navigation.navigate('OnboardCollege', this.state);
-                        
+                        }
                     }}>
                             <Text style={styles.buttonText}>NEXT</Text>
                     </TouchableOpacity>
@@ -108,18 +119,18 @@ onboardText: {
 formContainer: {
     flex: 0.5,
     flexDirection:'column',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
 },  
 
 textInputContainer: {
     flex: 1,
-    alignItems:'center',
+    alignItems:'stretch',
     justifyContent:'space-evenly',
+    paddingHorizontal: 50,
 },
 
 textInputStyle: {
-    width: 190,
     textAlign: 'center',
     fontFamily: 'Montserrat-Medium',
     fontSize: 18,
@@ -129,14 +140,13 @@ textInputStyle: {
 },
 
 button: {
-    width: 350,
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: 'white',
     borderWidth: 1,
     borderRadius: 20,
-    margin: 10,
+    marginHorizontal: 25,
 },
 
 buttonText: {

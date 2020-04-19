@@ -12,10 +12,10 @@ export default class OnboardCollegeScreen extends React.Component{
     constructor(props) {
         super(props)
         this.state = {
-            schoolName: 'f',
-            major: 'f',
-            graduationYear: 'f',
-            location: 'f',
+            schoolName: '',
+            major: '',
+            graduationYear: '',
+            location: '',
         }
     } 
 
@@ -34,8 +34,42 @@ export default class OnboardCollegeScreen extends React.Component{
         };
     }
     
-    addUser() {
-        // Implement once react-native-firebase/database is added
+    addUserProfile() {
+        dbRefs.users.child(auth().currentUser.uid).update({
+            isNewUser: false,
+            profile: {
+                name: this.state.name,
+                phoneNumber: this.state.phoneNumber,
+                birthday: this.state.birthday,
+                gender: this.state.gender,
+                schoolName: this.state.schoolName,
+                major: this.state.major,
+                graduationYear: this.state.graduationYear,
+                location: this.state.location
+            }
+        })
+        .then(() => {
+            console.log('Completed registration.');
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
+
+    validateFields() {
+        let schoolName = this.state.schoolName;
+        let major = this.state.major;
+        let graduationYear = this.state.graduationYear;
+        let location = this.state.location;
+        if (schoolName == '' || major == '' || graduationYear == '' || location == '') {
+            alert('Please fill out all fields');
+            return false; 
+        }
+        if (graduationYear.length != 4 || isNaN(graduationYear)) {
+            alert('Graduation year must be 4 digits long (e.g. 2020)');
+            return false;
+        }
+        return true;
     }
 
     render() {
@@ -66,6 +100,7 @@ export default class OnboardCollegeScreen extends React.Component{
                     <TextInput style={styles.textInputStyle}
                     placeholderTextColor = "white"
                     placeholder="graduation year"
+                    keyboardType='number-pad'
                     onChangeText={text => this.setState({graduationYear: text})}
                     />
 
@@ -82,15 +117,9 @@ export default class OnboardCollegeScreen extends React.Component{
 
                 <TouchableOpacity style={styles.button}
                 onPress={() => {
-                    console.log(auth().currentUser.uid);
-                    dbRefs.users.child(auth().currentUser.uid).child('isNewUser').set(false)
-                    .then(() => {
-                        console.log('Completed registration.');
-                        this.props.navigation.navigate('Profile');
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
+                    if (this.validateFields()) {
+                        this.addUserProfile();
+                    }                    
                 }}>
                         <Text style={styles.buttonText}>COMPLETE REGISTRATION</Text>
                 </TouchableOpacity>
@@ -134,18 +163,18 @@ onboardText: {
 formContainer: {
     flex: 0.5,
     flexDirection:'column',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
 },  
 
 textInputContainer: {
     flex: 1,
-    alignItems:'center',
+    alignItems:'stretch',
     justifyContent:'space-evenly',
+    paddingHorizontal: 50,
 },
 
 textInputStyle: {
-    width: 190,
     textAlign: 'center',
     fontFamily: 'Montserrat-Medium',
     fontSize: 18,
@@ -155,14 +184,13 @@ textInputStyle: {
 },
 
 button: {
-    width: 350,
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: 'white',
     borderWidth: 1,
     borderRadius: 20,
-    margin: 10,
+    marginHorizontal: 25,
 },
 
 buttonText: {

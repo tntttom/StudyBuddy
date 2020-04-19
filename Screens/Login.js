@@ -115,19 +115,18 @@ loginText: {
 formContainer: {
     flex: 0.5,
     flexDirection:'column',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
 },  
 
 textInputContainer: {
     flex: 1,
-    alignItems:'center',
+    alignItems:'stretch',
     justifyContent:'space-evenly',
-
+    paddingHorizontal: 50,
 },
 
 textInputStyle: {
-    width: 190,
     textAlign: 'center',
     fontFamily: 'Montserrat-Medium',
     fontSize: 18,
@@ -137,14 +136,13 @@ textInputStyle: {
 },
 
 button: {
-    width: 350,
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: 'white',
     borderWidth: 1,
     borderRadius: 20,
-    margin: 10,
+    marginHorizontal: 25,
 },
 
 buttonText: {
