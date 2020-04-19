@@ -35,7 +35,7 @@ function AppStack(isNewUser) {
   else {
     return (
       <>
-        {/* <Stack.Screen name ="Home" component={HomeScreen} options={{title:'study', headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32}, }}/> */}
+        <Stack.Screen name ="Home" component={HomeScreen} options={{title:'study', headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32}, }}/>
         <Stack.Screen name ="Profile" component={ProfileScreen} options={{headerShown:false}}/> 
         <Stack.Screen name ="StudyDetails" component={StudyDetailsScreen} />
       </>

@@ -1,8 +1,10 @@
 import * as React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, TextInput, Dimensions} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Button, TextInput, Dimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { ScrollView } from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class ProfileScreen extends React.Component{
     constructor(props) {
@@ -12,8 +14,20 @@ export default class ProfileScreen extends React.Component{
         }
     }
 
-    componentDidMount() {
-        this.state.user = auth().currentUser;
+    async componentDidMount() {
+        let currentUser;
+        try {
+            currentUser = await AsyncStorage.getItem('currentUser');
+            let user = JSON.parse(currentUser);
+            this.setState({user: user});
+            console.log(this.state.user.profile.name)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    name() {
+        return ;
     }
 
     render() {
@@ -33,7 +47,9 @@ export default class ProfileScreen extends React.Component{
                     </View>
 
                     <View style={{backgroundColor:'white', flex: 0.4}}>
-                    <Text style={styles.nameText}>Tommy Nguyen</Text>
+                    <Text style={styles.nameText}>
+                        {this.name()}
+                    </Text>
                     <Text style={styles.detailText}>4th year Software Engineering student at Loyola University Chicago</Text>
                     </View>
 
@@ -90,11 +106,25 @@ export default class ProfileScreen extends React.Component{
                             </View>
                             
                         </ScrollView>
+                        <View>
+                            <Button
+                                title='Go to Home (Placeholder Navigation)'
+                                onPress={() =>
+                                    this.props.navigation.navigate('Home')
+                                }
+                            />
+                        </View>
 
 
                     </View>
 
                     <View style={{flex:0.2}}>
+                        <Button
+                            title='Go to Home'
+                            onPress={() =>
+                                this.props.navigation.navigate('Home')
+                            }
+                        />
                         <TouchableOpacity style={styles.button}
                             onPress={() =>
                                 auth()
