@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
 
     profileContainer: {
         flex: 0.5,
-    
         justifyContent: 'flex-start',
         alignContent:'center',
         width: Dimensions.get('window').width,
