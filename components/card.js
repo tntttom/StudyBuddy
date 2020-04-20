@@ -13,8 +13,12 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const HomeCard = ({studyGroup: {studyGroup: name}, id}) => {
   return (
-    <TouchableOpacity style={styles.cardContainer}>
-      <Text style={styles.cardHeaderText}>{name}</Text>
+    <TouchableOpacity>
+      <LinearGradient
+        style={styles.cardContainer}
+        colors={['#5046FE', '#9C6ADC', '#F773FC']}>
+        <Text style={styles.cardHeaderText}>{name}</Text>
+      </LinearGradient>
     </TouchableOpacity>
   );
 };
@@ -27,7 +31,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     height: 300,
     width: 300,
-    borderRadius: 18,
+    borderRadius: 30,
     alignItems: 'center',
   },
 
@@ -35,6 +39,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Medium',
     fontSize: 36,
     textAlign: 'center',
+    marginTop: 40,
+    color: 'white',
   },
 });
 
