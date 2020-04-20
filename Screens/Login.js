@@ -49,7 +49,7 @@ export default class LoginScreen extends React.Component{
                             auth()
                                 .signInWithEmailAndPassword(this.state.email,this.state.password)
                                 .then(() => {
-                                    console.log('User account created & signed in!');
+                                    console.log('User account signed in!');
                                 })
                                 .catch(error => {
                                     if (error.code === 'auth/user-not-found') {

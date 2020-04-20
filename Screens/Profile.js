@@ -14,22 +14,6 @@ export default class ProfileScreen extends React.Component{
         }
     }
 
-    async componentDidMount() {
-        let currentUser;
-        try {
-            currentUser = await AsyncStorage.getItem('currentUser');
-            let user = JSON.parse(currentUser);
-            this.setState({user: user});
-            console.log(this.state.user.profile.name)
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    name() {
-        return ;
-    }
-
     render() {
         return (
             <View style={styles.container}>
@@ -48,7 +32,7 @@ export default class ProfileScreen extends React.Component{
 
                     <View style={{backgroundColor:'white', flex: 0.4}}>
                     <Text style={styles.nameText}>
-                        {this.name()}
+                        {'Tommy Nguyen'}
                     </Text>
                     <Text style={styles.detailText}>4th year Software Engineering student at Loyola University Chicago</Text>
                     </View>

@@ -13,33 +13,7 @@ export default class HomeScreen extends React.Component{
         super(props);
         this.state = {
             user: null,
-        }
-    }
-
-    async componentDidMount() {
-        let currentUser;
-        const uid = auth().currentUser.uid; // UID from auth token
-
-        // Check for user data in async storage
-        try {
-            currentUser = await AsyncStorage.getItem('currentUser');
-        } catch (error) {
-            console.log(error);
-        }
-
-        // Check if a user exists in async storage or if user mismatch
-        if(currentUser !== null && JSON.parse(currentUser).uid === uid) {
-            console.log('User data already saved to Async storage');
-        }
-        else {
-            console.log('User data not previously stored');
-            dbRefs.users.child(uid).once('value')
-            .then(snapshot => {
-                let user = snapshot.val();
-                AsyncStorage.setItem('currentUser', JSON.stringify(user));
-                this.setState({user: user});
-            })            
-        }
+        };
     }
 
     render() {
