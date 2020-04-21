@@ -31,6 +31,25 @@ export default class HomeScreen extends React.Component {
     };
   }
 
+  static navigationOptions = ({navigation}) => ({
+    title: 'study',
+    headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32},
+    headerRight: () => (
+      <Button
+        onPress={() => alert('This is a button')}
+        title="+"
+        color="black"
+      />
+    ),
+    headerLeft: () => (
+      <Button
+        onPress={() => navigation.navigate('Profile')}
+        title="Profile"
+        color="black"
+      />
+    ),
+  });
+
   componentDidMount() {
     dbRefs.studyGroups.on('value', querySnapShot => {
       let data = querySnapShot.val() ? querySnapShot.val() : {};
@@ -103,25 +122,25 @@ export default class HomeScreen extends React.Component {
     );
   }
 
-  // Save database graphs into async storage as 'graphs'
-  saveData = async graphs => {
-    try {
-      await AsyncStorage.setItem('graphs', JSON.stringify(graphs));
-    } catch (error) {
-      // Do something on error
-    }
-  };
-  // Read database graphs from async storage as 'graphs'
-  readData = async () => {
-    try {
-      let graphsJSON = await AsyncStorage.getItem('graphs');
-      let graphs = JSON.parse(graphsJSON);
+  // // Save database graphs into async storage as 'graphs'
+  // saveData = async graphs => {
+  //   try {
+  //     await AsyncStorage.setItem('graphs', JSON.stringify(graphs));
+  //   } catch (error) {
+  //     // Do something on error
+  //   }
+  // };
+  // // Read database graphs from async storage as 'graphs'
+  // readData = async () => {
+  //   try {
+  //     let graphsJSON = await AsyncStorage.getItem('graphs');
+  //     let graphs = JSON.parse(graphsJSON);
 
-      // Do something with graphs
-    } catch (error) {
-      // Do something on error
-    }
-  };
+  //     // Do something with graphs
+  //   } catch (error) {
+  //     // Do something on error
+  //   }
+  // };
 }
 
 const styles = StyleSheet.create({

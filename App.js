@@ -3,7 +3,7 @@ import 'react-native-gesture-handler';
 import React, {useState, useEffect} from 'react';
 import {Button} from 'react-native';
 
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import WelcomeScreen from './Screens/Welcome.js';
@@ -53,24 +53,18 @@ function AppStack(isNewUser) {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{
-            title: 'study',
-            headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32},
-            headerRight: () => (
-              <Button
-                onPress={() => alert('This is a button')}
-                title="+"
-                color="black"
-              />
-            ),
-          }}
+          options={HomeScreen.navigationOptions}
         />
         <Stack.Screen
           name="Profile"
           component={ProfileScreen}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="StudyDetails" component={StudyDetailsScreen} />
+        <Stack.Screen
+          name="StudyDetails"
+          component={StudyDetailsScreen}
+          options={{title: 'study group'}}
+        />
       </>
     );
   }
