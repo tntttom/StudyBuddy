@@ -97,25 +97,25 @@ export default class HomeScreen extends React.Component {
     );
   }
 
-  // Save database graphs into async storage as 'graphs'
-  saveData = async graphs => {
-    try {
-      await AsyncStorage.setItem('graphs', JSON.stringify(graphs));
-    } catch (error) {
-      // Do something on error
-    }
-  };
-  // Read database graphs from async storage as 'graphs'
-  readData = async () => {
-    try {
-      let graphsJSON = await AsyncStorage.getItem('graphs');
-      let graphs = JSON.parse(graphsJSON);
+  // // Save database graphs into async storage as 'graphs'
+  // saveData = async graphs => {
+  //   try {
+  //     await AsyncStorage.setItem('graphs', JSON.stringify(graphs));
+  //   } catch (error) {
+  //     // Do something on error
+  //   }
+  // };
+  // // Read database graphs from async storage as 'graphs'
+  // readData = async () => {
+  //   try {
+  //     let graphsJSON = await AsyncStorage.getItem('graphs');
+  //     let graphs = JSON.parse(graphsJSON);
 
-      // Do something with graphs
-    } catch (error) {
-      // Do something on error
-    }
-  };
+  //     // Do something with graphs
+  //   } catch (error) {
+  //     // Do something on error
+  //   }
+  // };
 }
 
 const styles = StyleSheet.create({

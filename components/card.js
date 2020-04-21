@@ -19,7 +19,6 @@ const HomeCard = ({studyGroup: {studyGroup: name}, id}) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        console.log('studyGroup =', id)
         navigation.navigate('StudyDetails', { 
           name: name,
           groupID: id
