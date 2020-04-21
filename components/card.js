@@ -10,14 +10,21 @@ import {
 } from 'react-native';
 import * as React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
+import {white} from 'color-name';
 
-const HomeCard = ({studyGroup: {studyGroup: name}, id}) => {
+const HomeCard = ({
+  studyGroup: {studyGroup: course, topic, groupName, location},
+  id,
+}) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity style={styles.cardShadow}>
       <LinearGradient
         style={styles.cardContainer}
-        colors={['#5046FE', '#9C6ADC', '#F773FC']}>
-        <Text style={styles.cardHeaderText}>{name}</Text>
+        colors={['#FF1C1C', '#FF19FF']}>
+        <Text style={styles.cardHeaderText}>{course}</Text>
+        <Text style={styles.cardSubText}>{topic}</Text>
+        <Text style={styles.cardGroupName}>{groupName}</Text>
+        <Text style={styles.cardLocationText}>{location}</Text>
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -30,7 +37,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 15,
     height: 300,
-    width: 300,
+    width: 312,
     borderRadius: 30,
     alignItems: 'center',
   },
@@ -39,8 +46,39 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Medium',
     fontSize: 36,
     textAlign: 'center',
-    marginTop: 40,
+    marginTop: 21,
     color: 'white',
+  },
+
+  cardSubText: {
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 18,
+    textAlign: 'center',
+    marginTop: 11,
+    color: 'white',
+  },
+
+  cardGroupName: {
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 38,
+    textAlign: 'center',
+    marginTop: 28,
+    color: 'white',
+  },
+
+  cardLocationText: {
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 24,
+    textAlign: 'center',
+    marginTop: 76,
+    color: 'white',
+  },
+
+  cardShadow: {
+    shadowColor: '#FF19FF',
+    shadowOffset: {height: 2, width: 0},
+    shadowOpacity: 0.7,
+    shadowRadius: 6,
   },
 });
 

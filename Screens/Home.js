@@ -24,7 +24,10 @@ export default class HomeScreen extends React.Component {
     this.state = {
       user: null,
       studyGroups: [],
-      newGroup: '',
+      groupCourse: '',
+      groupTopic: '',
+      groupName: '',
+      groupLocation: '',
     };
   }
 
@@ -40,12 +43,15 @@ export default class HomeScreen extends React.Component {
 
   addStudyGroup() {
     dbRefs.studyGroups.push({
-      studyGroup: this.state.newGroup,
+      studyGroup: this.state.groupCourse,
+      topic: 'Chapter 10',
+      groupName: 'Johns Group',
+      location: 'LSB 142',
     });
 
     Alert.alert('Action!', 'A new group was created!');
     this.setState({
-      newGroup: '',
+      groupCourse: '',
     });
   }
 
@@ -66,11 +72,11 @@ export default class HomeScreen extends React.Component {
         <ScrollView showsVerticalScrollIndicator={false}>
           <TextInput
             placeholder="Create A Group!"
-            value={this.state.newGroup}
+            value={this.state.groupCourse}
             style={styles.textInput}
             onChangeText={e => {
               this.setState({
-                newGroup: e,
+                groupCourse: e,
               });
             }}
           />
