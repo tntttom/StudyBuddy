@@ -11,9 +11,22 @@ import {
 import * as React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 
+import { useNavigation } from '@react-navigation/native';
+
 const HomeCard = ({studyGroup: {studyGroup: name}, id}) => {
+  const navigation = useNavigation();
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => {
+        console.log('studyGroup =', id)
+        navigation.navigate('StudyDetails', { 
+          name: name,
+          groupID: id
+        });
+      }
+      }
+    >
       <LinearGradient
         style={styles.cardContainer}
         colors={['#5046FE', '#9C6ADC', '#F773FC']}>

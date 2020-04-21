@@ -40,7 +40,7 @@ export default class HomeScreen extends React.Component {
 
   addStudyGroup() {
     dbRefs.studyGroups.push({
-      studyGroup: this.state.newGroup,
+      studyGroup: this.state.newGroup
     });
 
     Alert.alert('Action!', 'A new group was created!');
