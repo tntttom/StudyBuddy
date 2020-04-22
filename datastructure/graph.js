@@ -42,7 +42,6 @@ export function removeConnection(uid, groupID) {
 // Use: check if a user is already in the study group or not
 export async function isUserInGroup(uid, groupID) {
   const val = await dbRefs.studyGroups.child(groupID + '/members/' + uid).once('value');
-  console.log('val =',val);
   if (val.exists()) {
     console.log('The user is in this group already.');
     return true;
@@ -55,8 +54,17 @@ export async function isUserInGroup(uid, groupID) {
 
 // List all the users in a group node
 // Use: Retrieve all members of a study group
-export function listUsersOfGroup(groupID) {
+export async function listUsersOfGroup(groupID) {
+  let uids = new Array();
+  
+  let members = await dbRefs.studyGroups.child(groupID + '/members').once('value');
+  members.forEach(uid => {
+    uids.push(uid.key);
+  })
 
+  // console.log('uids =', uids);
+ 
+  return uids;
 }
 
 // List all the groups in a user node

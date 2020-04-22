@@ -11,7 +11,6 @@ import {
 import * as React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {white} from 'color-name';
-
 import {useNavigation} from '@react-navigation/native';
 
 const HomeCard = ({

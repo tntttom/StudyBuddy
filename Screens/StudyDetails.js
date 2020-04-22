@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import dbRefs from '../api/firebase-database';
 import auth from '@react-native-firebase/auth';
 
-import { addConnection, removeConnection, isUserInGroup } from '../datastructure/graph.js';
+import { addConnection, removeConnection, isUserInGroup, listGroupsOfUser, listUsersOfGroup } from '../datastructure/graph.js';
 
 export default class StudyDetailsScreen extends React.Component{
     constructor(props) {
@@ -16,41 +16,29 @@ export default class StudyDetailsScreen extends React.Component{
             inGroup: false,
             members: [],
         };
-    }    
-
-
-    componentDidMount() {
-        const { route } = this.props;
-        this.setState({group: route.params});
-        const id = route.params.groupID;
-
-        dbRefs.studyGroups.child(id + '/members').on('value', querySnapShot => {
-          let data = querySnapShot.val() ? querySnapShot.val() : {};
-          let members = {...data};
-          this.setState({
-            members: members,
-          });
-        });
+        this.getMembers();
     }
 
-    // // Needs some work still
-    // listMembers() {
-    //     const memberKeys = Object.keys(this.state.members);
-    //     return (
-    //         memberKeys.map(key => {
-    //             console.log(key);
-    //             return (
-    //                 // Only returning the uid of members right now
-    //                 // Will have to grab user info of that uid (like username) here
-    //                 <Text>{key}</Text>
-    //             )
-    //         })
-    //     );
-    // }
+    getMembers() {
+        listUsersOfGroup(this.state.group.groupID).then(members => {
+            this.setState({members: members});
+        })
+    }
+
+    listMembers() {
+        return this.state.members.map(member => {
+            return (
+                // Only returning the uid of members right now
+                // Will have to grab user info of that uid (like username) here
+                <Text key={member}>{member}</Text>
+            );
+        })
+    }
 
     joinLeaveButton() {
         const uid = auth().currentUser.uid;
         const groupID = this.state.group.groupID;
+
         isUserInGroup(uid, groupID).then(val => {
             if (this.state.inGroup !== val) {
                 this.setState({inGroup: val});
@@ -60,7 +48,10 @@ export default class StudyDetailsScreen extends React.Component{
         if (this.state.inGroup) {
             return (
                 <TouchableOpacity style={styles.button}
-                    onPress={() => removeConnection(uid, groupID)}    
+                    onPress={() => {
+                        removeConnection(uid, groupID)
+                        this.setState({inGroup: false});
+                    }}    
                 >
                     <Text style={styles.leaveText}>LEAVE STUDY GROUP</Text>
                 </TouchableOpacity>
@@ -69,7 +60,10 @@ export default class StudyDetailsScreen extends React.Component{
         else {
             return (
                 <TouchableOpacity style={styles.button}
-                    onPress={() => addConnection(uid, groupID)}    
+                    onPress={() => {
+                        addConnection(uid, groupID)
+                        this.setState({inGroup: true});
+                    }}    
                 >
                     <Text style={styles.joinText}>JOIN STUDY GROUP</Text>
                 </TouchableOpacity>
@@ -92,7 +86,7 @@ export default class StudyDetailsScreen extends React.Component{
 
                 <View style={styles.membersContainer}>
                     <Text style={styles.headerText}>{group.name.toLowerCase() + ' study buddies'}</Text>
-                    {/* {this.listMembers()} */}
+                    {this.listMembers()}
                 </View>
                 
                  <View style={styles.buttonContainer}>
