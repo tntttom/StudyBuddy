@@ -16,16 +16,40 @@ export default class StudyDetailsScreen extends React.Component{
             inGroup: false,
             members: [],
         };
-        this.getMembers();
     }
 
-    getMembers() {
-        listUsersOfGroup(this.state.group.groupID).then(members => {
-            this.setState({members: members});
+    componentDidMount() {
+        const groupID = this.state.group.groupID;
+        this.getMembers(groupID);
+    }
+
+    componentDidUpdate() {
+        const uid = auth().currentUser.uid;
+        const groupID = this.state.group.groupID;
+        isUserInGroup(uid, groupID).then(val => {
+            this.setState({inGroup: val});
         })
     }
 
+    componentWillUnmount() {
+        const groupID = this.state.group.groupID;
+        dbRefs.studyGroups.child(groupID + '/members').off();
+    }
+
+    getMembers(groupID) {
+        listUsersOfGroup(groupID, snapshot => {
+            var data = new Array();
+            snapshot.forEach(member => {
+                data.push(member);
+            });
+            
+            console.log('data =', data);
+            this.setState({members: data});
+        });
+    }
+
     listMembers() {
+        console.log('this.state.members = ',this.state.members);
         return this.state.members.map(member => {
             return (
                 // Only returning the uid of members right now
@@ -35,22 +59,19 @@ export default class StudyDetailsScreen extends React.Component{
         })
     }
 
+    // LOL how can I refactor this?
     joinLeaveButton() {
         const uid = auth().currentUser.uid;
         const groupID = this.state.group.groupID;
-
-        isUserInGroup(uid, groupID).then(val => {
-            if (this.state.inGroup !== val) {
-                this.setState({inGroup: val});
-            }
-        })
         
         if (this.state.inGroup) {
             return (
                 <TouchableOpacity style={styles.button}
                     onPress={() => {
-                        removeConnection(uid, groupID)
-                        this.setState({inGroup: false});
+                        removeConnection(uid, groupID);
+                        isUserInGroup(uid, groupID).then(val => {
+                            this.setState({inGroup: val});
+                        });
                     }}    
                 >
                     <Text style={styles.leaveText}>LEAVE STUDY GROUP</Text>
@@ -61,8 +82,10 @@ export default class StudyDetailsScreen extends React.Component{
             return (
                 <TouchableOpacity style={styles.button}
                     onPress={() => {
-                        addConnection(uid, groupID)
-                        this.setState({inGroup: true});
+                        addConnection(uid, groupID);
+                        isUserInGroup(uid, groupID).then(val => {
+                            this.setState({inGroup: val});
+                        });
                     }}    
                 >
                     <Text style={styles.joinText}>JOIN STUDY GROUP</Text>
