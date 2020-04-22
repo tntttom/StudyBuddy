@@ -6,11 +6,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import dbRefs from '../api/firebase-database';
 import auth from '@react-native-firebase/auth';
 
+import { addConnection, removeConnection, isUserInGroup } from '../datastructure/graph.js';
+
 export default class StudyDetailsScreen extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            group: null,
+            group: props.route.params,
+            inGroup: false,
             members: [],
         };
     }    
@@ -30,30 +33,48 @@ export default class StudyDetailsScreen extends React.Component{
         });
     }
 
-    // Needs some work still
-    listMembers() {
-        const memberKeys = Object.keys(this.state.members);
-        return (
-            memberKeys.map(key => {
-                console.log(key);
-                return (
-                    // Only returning the uid of members right now
-                    // Will have to grab user info of that uid (like username) here
-                    <Text>{key}</Text>
-                )
-            })
-        );
-    }
+    // // Needs some work still
+    // listMembers() {
+    //     const memberKeys = Object.keys(this.state.members);
+    //     return (
+    //         memberKeys.map(key => {
+    //             console.log(key);
+    //             return (
+    //                 // Only returning the uid of members right now
+    //                 // Will have to grab user info of that uid (like username) here
+    //                 <Text>{key}</Text>
+    //             )
+    //         })
+    //     );
+    // }
 
-    // Need to adjust this to check if the user is already part of the study group or not
-    // Then adjust button function and look
-    onPress() {
+    joinLeaveButton() {
         const uid = auth().currentUser.uid;
         const groupID = this.state.group.groupID;
+        isUserInGroup(uid, groupID).then(val => {
+            if (this.state.inGroup !== val) {
+                this.setState({inGroup: val});
+            }
+        })
         
-        // Add bidirection edge between group node and user node
-        dbRefs.studyGroups.child(groupID + '/members/' + uid).set(uid);
-        dbRefs.users.child(uid + '/groups/' + groupID).set(groupID); 
+        if (this.state.inGroup) {
+            return (
+                <TouchableOpacity style={styles.button}
+                    onPress={() => removeConnection(uid, groupID)}    
+                >
+                    <Text style={styles.leaveText}>LEAVE STUDY GROUP</Text>
+                </TouchableOpacity>
+            );
+        }
+        else {
+            return (
+                <TouchableOpacity style={styles.button}
+                    onPress={() => addConnection(uid, groupID)}    
+                >
+                    <Text style={styles.joinText}>JOIN STUDY GROUP</Text>
+                </TouchableOpacity>
+            );
+        }
     }
 
     render() {
@@ -71,15 +92,11 @@ export default class StudyDetailsScreen extends React.Component{
 
                 <View style={styles.membersContainer}>
                     <Text style={styles.headerText}>{group.name.toLowerCase() + ' study buddies'}</Text>
-                    {this.listMembers()}
+                    {/* {this.listMembers()} */}
                 </View>
                 
                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button}
-                        onPress={() => this.onPress()}    
-                    >
-                        <Text style={styles.buttonText}>JOIN STUDY GROUP</Text>
-                    </TouchableOpacity>
+                    {this.joinLeaveButton()}
                  </View>
             </View>
         );
@@ -144,10 +161,16 @@ const styles = StyleSheet.create({
         margin: 10,
     },
 
-    buttonText: {
+    joinText: {
         fontFamily: 'Montserrat-Medium',
         fontSize: 18,
         color: 'black',
+    }, 
+
+    leaveText: {
+        fontFamily: 'Montserrat-Medium',
+        fontSize: 18,
+        color: 'red',
     }
     
 })

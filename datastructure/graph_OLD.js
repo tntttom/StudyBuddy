@@ -1,4 +1,4 @@
-var Node = require('./Node.js');
+var Node = require('./node_OLD.js');
 
 class Graph {
     // Graph is a Map of nodes, with keys as values of nodes and values as the nodes themselves
