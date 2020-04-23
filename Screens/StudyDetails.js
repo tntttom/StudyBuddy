@@ -6,34 +6,41 @@ import LinearGradient from 'react-native-linear-gradient';
 import dbRefs from '../api/firebase-database';
 import auth from '@react-native-firebase/auth';
 
-import { addConnection, removeConnection, isUserInGroup, listGroupsOfUser, listUsersOfGroup, getUser } from '../datastructure/graph.js';
+import { addConnection, removeConnection, isUserInGroup, listGroupsOfUser, listUsersOfGroup, getUser, getGroup } from '../datastructure/graph.js';
 
 export default class StudyDetailsScreen extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            group: props.route.params,
+            groupID: props.route.params.groupID,
+            group: Object(),
             inGroup: false,
             members: [],
-            uid: '',
-            user: null,
         };
+        
     }
 
     componentDidMount() {
+        console.log('groupID=',this.state.groupID);
+        getGroup(this.state.groupID).then(snapshot => {
+            console.log(snapshot);
+            if (snapshot !== null) {
+                this.setState({group: snapshot});
+            }
+        })
+
         const uid = auth().currentUser.uid;
         this.setState({uid: uid});
-        const groupID = this.state.group.groupID;
 
-        this.getMembers(groupID); // Start listener for group members
+        this.getMembers(this.state.groupID); // Start listener for group members
         // Initialize whether user is part of group or not
-        isUserInGroup(uid, groupID).then(val => {
+        isUserInGroup(uid, this.state.groupID).then(val => {
             this.setState({inGroup: val});
         });
     }
 
     componentWillUnmount() {
-        const groupID = this.state.group.groupID;
+        const groupID = this.state.groupID;
         dbRefs.studyGroups.child(groupID + '/members').off(); // Turn off listener
     }
 
@@ -60,7 +67,7 @@ export default class StudyDetailsScreen extends React.Component{
 
     joinLeaveButton() {
         const uid = auth().currentUser.uid;
-        const groupID = this.state.group.groupID;
+        const groupID = this.state.groupID;
         let text, style, onPress;
 
         if (this.state.inGroup) {
@@ -90,31 +97,27 @@ export default class StudyDetailsScreen extends React.Component{
     }
 
     render() {
-        const { route } = this.props;
-        const group = route.params;
-
+        const group = this.state.group;
         return (
             <View style={styles.container}>
                 <View style={styles.groupContainer}>
                     <LinearGradient colors={['#FF7EF5', '#41E2FF']} style={styles.gradient}>
-                        <Text style={styles.groupText}>{group.name}</Text>
+                        <Text style={styles.groupText}>{group.groupName}</Text>
                         <Text style={{marginTop: 10}}>{'Group ID: ' + group.groupID}</Text>
                     </LinearGradient>
                 </View>
 
                 <View style={styles.membersContainer}>
-                    <Text style={styles.headerText}>{group.name.toLowerCase() + ' study buddies'}</Text>
+                    <Text style={styles.headerText}>{group.studyGroup + ' study buddies'}</Text>
                     {this.listMembers()}
                 </View>
                 
-                 <View style={styles.buttonContainer}>
+                <View style={styles.buttonContainer}>
                     {this.joinLeaveButton()}
-                 </View>
+                </View>
             </View>
         );
-
-    }
-    
+    }    
 }
 
 const styles = StyleSheet.create({

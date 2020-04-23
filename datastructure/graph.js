@@ -42,10 +42,10 @@ export function removeUser(userID) {
 // Get group node
 // Use: retrieve group object using userID
 export async function getGroup(groupID) {
-  const val = await dbRefs.users.child(groupID).once('value');
+  const val = await dbRefs.studyGroups.child(groupID).once('value');
   if (val.exists()) {
     // Group exists
-    return val;
+    return val.val();
   }
   else {
     return null;

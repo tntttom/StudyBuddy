@@ -14,14 +14,14 @@ export default class ProfileScreen extends React.Component{
         this.state = {
             user: Object(),
             profile: Object(),
-            groups: [],
+            groups: new Array(),
         }
     }
 
     componentDidMount() {
         const uid = auth().currentUser.uid;
 
-        this.getMembers();
+        this.getGroups();
 
         getUser(uid).then(snapshot => {
             if (snapshot !== null) {
@@ -35,27 +35,38 @@ export default class ProfileScreen extends React.Component{
         dbRefs.users.off();
     }
 
-    getMembers() {
+    getGroups() {
         const uid = auth().currentUser.uid;
         listGroupsOfUser(uid, snapshot => {
             var data = new Array();
             snapshot.forEach(group => {
                 data.push(group);
             });
-            
-            this.setState({groups: data});
+            if (data !== []) {
+                this.setState({groups: data});
+            }
         });
     }
 
     listGroups() {
-        console.log(this.state.groups);
-        return this.state.groups.map(group => {
-            return(
-            <View style={styles.cardContainer}>
-                <Text style={styles.cardText}>{group}</Text>
-            </View>
-            );
-        });
+        const groups = this.state.groups;
+
+        if (groups !== []) {
+            return groups.map(group => {
+                return(
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.props.navigation.navigate('StudyDetails', {
+                                groupID: group,
+                            });
+                        }}>
+                        <View style={styles.cardContainer}>
+                            <Text style={styles.cardText}>{group}</Text>
+                        </View>
+                    </TouchableOpacity>
+                );
+            });
+        }
     }
 
     render() {
@@ -86,14 +97,13 @@ export default class ProfileScreen extends React.Component{
 
 
                 <View style={styles.courseContainer}>
-                    <Text style={styles.headerText}>courses</Text>
+                    <Text style={styles.headerText}>study groups</Text>
 
                     <View style={styles.scrollViewCourseContainer}>
                         <ScrollView 
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}>
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}>
                             {this.listGroups()}
-                            
                         </ScrollView>
                     </View>
                 </View>
