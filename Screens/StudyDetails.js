@@ -21,9 +21,7 @@ export default class StudyDetailsScreen extends React.Component{
     }
 
     componentDidMount() {
-        console.log('groupID=',this.state.groupID);
         getGroup(this.state.groupID).then(snapshot => {
-            console.log(snapshot);
             if (snapshot !== null) {
                 this.setState({group: snapshot});
             }

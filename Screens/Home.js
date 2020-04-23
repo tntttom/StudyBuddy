@@ -13,9 +13,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import {ScrollView} from 'react-native-gesture-handler';
 import HomeCard from '../components/card';
 
-import AsyncStorage from '@react-native-community/async-storage';
-
 import dbRefs from '../api/firebase-database';
+import auth from '@react-native-firebase/auth';
 
 import { addGroup, getAllGroups } from '../datastructure/graph.js';
 
@@ -23,7 +22,6 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
       studyGroups: [],
       groupCourse: '',
       groupTopic: '',
@@ -44,7 +42,9 @@ export default class HomeScreen extends React.Component {
     ),
     headerLeft: () => (
       <Button
-        onPress={() => navigation.navigate('Profile')}
+        onPress={() => {
+          navigation.navigate('Profile', {uid: auth().currentUser.uid});
+        }}
         title="Profile"
         color="black"
       />
@@ -85,13 +85,6 @@ export default class HomeScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-        <View>
-          <Button
-            title="Go to Profile (Placeholder navigation)"
-            onPress={() => this.props.navigation.navigate('Profile')}
-          />
-        </View>
-
         <ScrollView showsVerticalScrollIndicator={false}>
           <TextInput
             placeholder="Create A Group!"
@@ -125,26 +118,6 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   }
-
-  // // Save database graphs into async storage as 'graphs'
-  // saveData = async graphs => {
-  //   try {
-  //     await AsyncStorage.setItem('graphs', JSON.stringify(graphs));
-  //   } catch (error) {
-  //     // Do something on error
-  //   }
-  // };
-  // // Read database graphs from async storage as 'graphs'
-  // readData = async () => {
-  //   try {
-  //     let graphsJSON = await AsyncStorage.getItem('graphs');
-  //     let graphs = JSON.parse(graphsJSON);
-
-  //     // Do something with graphs
-  //   } catch (error) {
-  //     // Do something on error
-  //   }
-  // };
 }
 
 const styles = StyleSheet.create({

@@ -12,6 +12,7 @@ export default class ProfileScreen extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
+            uid: props.route.params.uid,
             user: Object(),
             profile: Object(),
             groups: new Array(),
