@@ -13,6 +13,7 @@ export default class NewGroup extends React.Component{
             groupCourse: '',
             groupTopic: '',
             groupLocation: '',
+            groupID: '',
         }
     }
 
@@ -24,7 +25,7 @@ export default class NewGroup extends React.Component{
           location: this.state.groupLocation,
         })
         console.log('New study group created with groupID: ', groupID);
-        Alert.alert('Action!', 'A new group was created!');
+        Alert.alert('Success!', 'A new group was created!');
     }
     
     render() {

@@ -32,6 +32,7 @@ export default class StudyDetailsScreen extends React.Component{
         this.setState({uid: uid});
 
         this.getMembers(); // Start listener for group members
+
         // Initialize whether user is part of group or not
         isUserInGroup(uid, this.state.groupID).then(val => {
             this.setState({inGroup: val});
@@ -46,13 +47,12 @@ export default class StudyDetailsScreen extends React.Component{
     getMembers() {
         const groupID = this.state.groupID;
         listUsersOfGroup(groupID, snapshot => {
-            if (snapshot !== []) {
-                snapshot.forEach(member => {
-                    getUser(member).then(memberObj => {
-                        this.setState({members: this.state.members.concat(memberObj)});
-                    })
-                });
-            }
+            this.setState({members: []});
+            snapshot.forEach(member => {
+                getUser(member).then(memberObj => {
+                    this.setState({members: this.state.members.concat(memberObj)});
+                })
+            });
         });
     }
 
