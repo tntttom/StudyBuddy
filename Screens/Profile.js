@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import auth from '@react-native-firebase/auth';
-import { getUser } from '../datastructure/graph.js';
+import { getUser, listGroupsOfUser } from '../datastructure/graph.js';
 import dbRefs from '../api/firebase-database.js';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -20,10 +20,42 @@ export default class ProfileScreen extends React.Component{
 
     componentDidMount() {
         const uid = auth().currentUser.uid;
+
+        this.getMembers();
+
         getUser(uid).then(snapshot => {
-            this.setState({user: snapshot});
-            this.setState({profile: snapshot.profile})
+            if (snapshot !== null) {
+                this.setState({user: snapshot});
+                this.setState({profile: snapshot.profile})
+            }
         })
+    }
+
+    componentWillUnmount() {
+        dbRefs.users.off();
+    }
+
+    getMembers() {
+        const uid = auth().currentUser.uid;
+        listGroupsOfUser(uid, snapshot => {
+            var data = new Array();
+            snapshot.forEach(group => {
+                data.push(group);
+            });
+            
+            this.setState({groups: data});
+        });
+    }
+
+    listGroups() {
+        console.log(this.state.groups);
+        return this.state.groups.map(group => {
+            return(
+            <View style={styles.cardContainer}>
+                <Text style={styles.cardText}>{group}</Text>
+            </View>
+            );
+        });
     }
 
     render() {
@@ -60,21 +92,8 @@ export default class ProfileScreen extends React.Component{
                         <ScrollView 
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}>
-                            <View style={styles.cardContainer}>
-                                <Text style={styles.cardText}>Biology</Text>
-                            </View>
-
-                            <View style={styles.cardContainer}>
-                                <Text style={styles.cardText}>Chemistry</Text>
-                            </View>
-
-                            <View style={styles.cardContainer}>
-                                <Text style={styles.cardText}>Calculus</Text>
-                            </View>
-
-                            <View style={styles.cardContainer}>
-                                <Text style={styles.cardText}>Biochem</Text>
-                            </View>
+                            {this.listGroups()}
+                            
                         </ScrollView>
                     </View>
                 </View>
