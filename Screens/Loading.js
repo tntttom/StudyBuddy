@@ -1,34 +1,26 @@
 
 import * as React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import navigationOptions from '@react-navigation/native';
+import {View, Text, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-
 export default class LoadingScreen extends React.Component{
-
     render() {
         return (
-
-        <LinearGradient colors={['#F43BD0','#F02323']} style={{flex:1}}>            
-            <View style={styles.container}>
-                <View style={styles.loadingContainer}>
-                     <Text style={styles.loadingText}>Loading...</Text>
+            <LinearGradient colors={['#F43BD0','#F02323']} style={{flex:1}}>            
+                <View style={styles.container}>
+                    <View style={styles.loadingContainer}>
+                        <Text style={styles.loadingText}>Loading...</Text>
+                    </View>
                 </View>
-            </View>
-        </LinearGradient>
-           
+            </LinearGradient>
         );
-
-    }
-    
+    } 
 }
 
 const styles = StyleSheet.create({
 
     container: {
         flex: 1
-
     },
 
     loadingText: {

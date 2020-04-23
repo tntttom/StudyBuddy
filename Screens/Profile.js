@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import auth from '@react-native-firebase/auth';
-import { getUser, listGroupsOfUser } from '../datastructure/graph.js';
+import { getUser, listGroupsOfUser, getGroup } from '../datastructure/graph.js';
 import dbRefs from '../api/firebase-database.js';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -15,16 +15,15 @@ export default class ProfileScreen extends React.Component{
             uid: props.route.params.uid,
             user: Object(),
             profile: Object(),
-            groups: new Array(),
+            groups: Array(),
+            groupIDs: Array(),
         }
     }
 
     componentDidMount() {
-        const uid = auth().currentUser.uid;
-
         this.getGroups();
 
-        getUser(uid).then(snapshot => {
+        getUser(this.state.uid).then(snapshot => {
             if (snapshot !== null) {
                 this.setState({user: snapshot});
                 this.setState({profile: snapshot.profile})
@@ -39,12 +38,13 @@ export default class ProfileScreen extends React.Component{
     getGroups() {
         const uid = auth().currentUser.uid;
         listGroupsOfUser(uid, snapshot => {
-            var data = new Array();
-            snapshot.forEach(group => {
-                data.push(group);
-            });
-            if (data !== []) {
-                this.setState({groups: data});
+            if (snapshot !== []) {
+                this.setState({groupIDs: snapshot});
+                snapshot.forEach(group => {
+                    getGroup(group).then(groupObj => {
+                        this.setState({groups: this.state.groups.concat(groupObj)});
+                    })
+                });
             }
         });
     }
@@ -53,16 +53,17 @@ export default class ProfileScreen extends React.Component{
         const groups = this.state.groups;
 
         if (groups !== []) {
-            return groups.map(group => {
+            return groups.map( (group, index) => {
+                console.log(group);
                 return(
                     <TouchableOpacity
                         onPress={() => {
                             this.props.navigation.navigate('StudyDetails', {
-                                groupID: group,
+                                groupID: this.state.groupIDs[index],
                             });
                         }}>
                         <View style={styles.cardContainer}>
-                            <Text style={styles.cardText}>{group}</Text>
+                            <Text style={styles.cardText}>{group.groupName}</Text>
                         </View>
                     </TouchableOpacity>
                 );
@@ -146,12 +147,6 @@ export default class ProfileScreen extends React.Component{
                     </View>
 
                     <View style={{flex:0.2}}>
-                        <Button
-                            title='Go to Home'
-                            onPress={() =>
-                                this.props.navigation.navigate('Home')
-                            }
-                        />
                         <TouchableOpacity style={styles.button}
                             onPress={() =>
                                 auth()
@@ -179,7 +174,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: 'white',
-        
     },  
 
     gradient: {
@@ -209,7 +203,6 @@ const styles = StyleSheet.create({
     },
 
     courseContainer: {
-        
         flex: 0.15,
         justifyContent: 'flex-start',
         width: Dimensions.get('window').width,
@@ -250,7 +243,7 @@ const styles = StyleSheet.create({
         shadowColor: 'black',
         shadowOpacity: 0.1,
         shadowOffset: {width: 1, height: 4},
-
+        elevation: 5
     },
 
     cardText: {
@@ -273,6 +266,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowOffset: {width: 1, height: 4},
         marginTop: 6,
+        elevation: 5
     },
 
     buttonContainer: {

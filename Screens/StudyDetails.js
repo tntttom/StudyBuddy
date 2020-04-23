@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import dbRefs from '../api/firebase-database';
 import auth from '@react-native-firebase/auth';
 
-import { addConnection, removeConnection, isUserInGroup, listGroupsOfUser, listUsersOfGroup, getUser, getGroup } from '../datastructure/graph.js';
+import { addConnection, removeConnection, isUserInGroup, listUsersOfGroup, getGroup } from '../datastructure/graph.js';
 
 export default class StudyDetailsScreen extends React.Component{
     constructor(props) {
