@@ -81,7 +81,7 @@ export default class HomeScreen extends React.Component {
   render() {
     let groupKeys = Object.keys(this.state.studyGroups);
 
-    console.log(this.state.studyGroups);
+    // console.log(this.state.studyGroups);
 
     return (
       <View style={styles.container}>

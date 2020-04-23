@@ -2,16 +2,28 @@ import * as React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Button, TextInput, Dimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { ScrollView } from 'react-native-gesture-handler';
-import auth from '@react-native-firebase/auth';
 
+import auth from '@react-native-firebase/auth';
+import { getUser } from '../datastructure/graph.js';
+import dbRefs from '../api/firebase-database.js';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class ProfileScreen extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            user: null,
+            user: Object(),
+            profile: Object(),
+            groups: [],
         }
+    }
+
+    componentDidMount() {
+        const uid = auth().currentUser.uid;
+        getUser(uid).then(snapshot => {
+            this.setState({user: snapshot});
+            this.setState({profile: snapshot.profile})
+        })
     }
 
     render() {
@@ -32,9 +44,10 @@ export default class ProfileScreen extends React.Component{
 
                     <View style={{backgroundColor:'white', flex: 0.4}}>
                     <Text style={styles.nameText}>
-                        {'Tommy Nguyen'}
+                        {this.state.profile.name}
                     </Text>
-                    <Text style={styles.detailText}>4th year Software Engineering student at Loyola University Chicago</Text>
+                    <Text style={styles.detailText}>{'Class of ' + this.state.profile.graduationYear + ' ' + 
+                        this.state.profile.major + ' student at ' + this.state.profile.schoolName + '.'}</Text>
                     </View>
 
                 </View>

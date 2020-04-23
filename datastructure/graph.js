@@ -6,7 +6,7 @@ export async function getUser(userID) {
   const val = await dbRefs.users.child(userID).once('value');
   if (val.exists()) {
     // User exists
-    return val;
+    return val.val();
   }
   else {
     return null;
