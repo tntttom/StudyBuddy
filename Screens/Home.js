@@ -23,10 +23,6 @@ export default class HomeScreen extends React.Component {
     super(props);
     this.state = {
       studyGroups: [],
-      groupCourse: '',
-      groupTopic: '',
-      groupName: '',
-      groupLocation: '',
     };
   }
 
@@ -63,21 +59,6 @@ export default class HomeScreen extends React.Component {
     dbRefs.studyGroups.off();
   }
 
-  addStudyGroup() {
-    const groupID = addGroup({
-      studyGroup: this.state.groupCourse,
-      topic: 'Chapter 10',
-      groupName: 'Johns Group',
-      location: 'LSB 142',
-    })
-
-    Alert.alert('Action!', 'A new group was created!');
-    this.setState({
-      groupID: groupID,
-      groupCourse: '',
-    });
-  }
-
   render() {
     let groupKeys = Object.keys(this.state.studyGroups);
 
@@ -86,7 +67,7 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <TextInput
+          {/* <TextInput
             placeholder="Create A Group!"
             value={this.state.groupCourse}
             style={styles.textInput}
@@ -95,11 +76,11 @@ export default class HomeScreen extends React.Component {
                 groupCourse: e,
               });
             }}
-          />
+          /> */}
 
           <Button
             title="Add new group"
-            onPress={this.addStudyGroup.bind(this)}
+            onPress={() => this.props.navigation.navigate('NewGroup') }
             color="blue"
           />
 

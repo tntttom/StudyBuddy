@@ -14,7 +14,7 @@ import {white} from 'color-name';
 import {useNavigation} from '@react-navigation/native';
 
 const HomeCard = ({
-  studyGroup: {studyGroup: course, topic, groupName, location},
+  studyGroup,
   id,
 }) => {
   const navigation = useNavigation();
@@ -29,10 +29,10 @@ const HomeCard = ({
       <LinearGradient
         style={styles.cardContainer}
         colors={['#FF1C1C', '#FF19FF']}>
-        <Text style={styles.cardHeaderText}>{course}</Text>
-        <Text style={styles.cardSubText}>{topic}</Text>
-        <Text style={styles.cardGroupName}>{groupName}</Text>
-        <Text style={styles.cardLocationText}>{location}</Text>
+        <Text style={styles.cardHeaderText}>{studyGroup.course}</Text>
+        <Text style={styles.cardSubText}>{studyGroup.topic}</Text>
+        <Text style={styles.cardGroupName}>{studyGroup.name}</Text>
+        <Text style={styles.cardLocationText}>{studyGroup.location}</Text>
       </LinearGradient>
     </TouchableOpacity>
   );

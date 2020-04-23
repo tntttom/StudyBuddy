@@ -6,7 +6,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
 import { getUser, listGroupsOfUser, getGroup } from '../datastructure/graph.js';
 import dbRefs from '../api/firebase-database.js';
-import AsyncStorage from '@react-native-community/async-storage';
 
 export default class ProfileScreen extends React.Component{
     constructor(props) {

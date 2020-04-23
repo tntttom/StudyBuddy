@@ -17,6 +17,7 @@ import ProfileScreen from './Screens/Profile.js';
 import HomeScreen from './Screens/Home.js';
 import StudyDetailsScreen from './Screens/StudyDetails.js';
 import LoadingScreen from './Screens/Loading.js';
+import NewGroup from './Screens/NewGroup.js';
 
 import auth from '@react-native-firebase/auth';
 import dbRefs from './api/firebase-database.js';
@@ -64,6 +65,11 @@ function AppStack(isNewUser) {
           name="StudyDetails"
           component={StudyDetailsScreen}
           options={{title: 'study group'}}
+        />
+        <Stack.Screen
+          name="NewGroup"
+          component={NewGroup}
+          options={{title: ''}}
         />
       </>
     );
