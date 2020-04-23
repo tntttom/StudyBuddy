@@ -124,6 +124,16 @@ export default class StudyDetailsScreen extends React.Component{
                 </View>
                 
                 <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button}
+                        onPress={() =>
+                            this.props.navigation.navigate('Chat', {
+                                groupID: this.state.groupID,
+                                group: this.state.group,
+                                members: this.state.members,
+                            })
+                        }>
+                        <Text style={styles.joinText}>OPEN CHAT</Text>
+                    </TouchableOpacity>
                     {this.joinLeaveButton()}
                 </View>
             </View>
@@ -167,7 +177,7 @@ const styles = StyleSheet.create({
     },
 
     membersContainer: {
-        flex: 0.65,
+        flex: 0.55,
         alignItems: 'stretch',
     },
 
@@ -193,7 +203,7 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        flex: 0.10,
+        flex: 0.20,
         justifyContent: 'center',
         alignContent: 'stretch',
         marginBottom: 20,

@@ -18,6 +18,7 @@ import HomeScreen from './Screens/Home.js';
 import StudyDetailsScreen from './Screens/StudyDetails.js';
 import LoadingScreen from './Screens/Loading.js';
 import NewGroup from './Screens/NewGroup.js';
+import Chat from './Screens/Chat.js';
 
 import auth from '@react-native-firebase/auth';
 import dbRefs from './api/firebase-database.js';
@@ -70,6 +71,10 @@ function AppStack(isNewUser) {
           name="NewGroup"
           component={NewGroup}
           options={{title: ''}}
+        />
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
         />
       </>
     );
