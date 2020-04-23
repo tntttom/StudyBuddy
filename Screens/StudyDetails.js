@@ -1,12 +1,13 @@
 
 import * as React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Dimensions, } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import dbRefs from '../api/firebase-database';
 import auth from '@react-native-firebase/auth';
 
-import { addConnection, removeConnection, isUserInGroup, listUsersOfGroup, getGroup } from '../datastructure/graph.js';
+import { addConnection, removeConnection, isUserInGroup, listUsersOfGroup, getGroup, getUser } from '../datastructure/graph.js';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class StudyDetailsScreen extends React.Component{
     constructor(props) {
@@ -30,7 +31,7 @@ export default class StudyDetailsScreen extends React.Component{
         const uid = auth().currentUser.uid;
         this.setState({uid: uid});
 
-        this.getMembers(this.state.groupID); // Start listener for group members
+        this.getMembers(); // Start listener for group members
         // Initialize whether user is part of group or not
         isUserInGroup(uid, this.state.groupID).then(val => {
             this.setState({inGroup: val});
@@ -42,23 +43,32 @@ export default class StudyDetailsScreen extends React.Component{
         dbRefs.studyGroups.child(groupID + '/members').off(); // Turn off listener
     }
 
-    getMembers(groupID) {
+    getMembers() {
+        const groupID = this.state.groupID;
         listUsersOfGroup(groupID, snapshot => {
-            var data = new Array();
-            snapshot.forEach(member => {
-                data.push(member);
-            });
-            
-            this.setState({members: data});
+            if (snapshot !== []) {
+                snapshot.forEach(member => {
+                    getUser(member).then(memberObj => {
+                        this.setState({members: this.state.members.concat(memberObj)});
+                    })
+                });
+            }
         });
     }
 
     listMembers() {
         return this.state.members.map(member => {
             return (
-                // Only returning the uid of members right now
-                // Will have to grab user info of that uid (like username) here
-                <Text key={member}>{member}</Text>
+                <TouchableOpacity
+                    onPress={() => {
+                        this.props.navigation.navigate('Profile', {
+                            uid: member.uid,
+                        });
+                    }}>
+                    <View style={styles.memberCard}>
+                        <Text key={member.uid}>{member.profile.name}</Text>
+                    </View>
+                </TouchableOpacity>
             );
         })
     }
@@ -101,13 +111,14 @@ export default class StudyDetailsScreen extends React.Component{
                 <View style={styles.groupContainer}>
                     <LinearGradient colors={['#FF7EF5', '#41E2FF']} style={styles.gradient}>
                         <Text style={styles.groupText}>{group.groupName}</Text>
-                        <Text style={{marginTop: 10}}>{'Group ID: ' + group.groupID}</Text>
                     </LinearGradient>
                 </View>
 
                 <View style={styles.membersContainer}>
                     <Text style={styles.headerText}>{group.studyGroup + ' study buddies'}</Text>
-                    {this.listMembers()}
+                    <ScrollView style={{marginVertical: 10}}>
+                        {this.listMembers()}
+                    </ScrollView>
                 </View>
                 
                 <View style={styles.buttonContainer}>
@@ -121,15 +132,15 @@ export default class StudyDetailsScreen extends React.Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
+        alignItems: 'stretch',
         backgroundColor: 'white',
-        
+        alignContent: 'center',
     },  
 
     groupContainer: {
         flex: 0.25,
         width: Dimensions.get('window').width,
+        alignItems: 'stretch'
     },
 
     gradient: {
@@ -146,20 +157,35 @@ const styles = StyleSheet.create({
 
     membersContainer: {
         flex: 0.65,
-        padding: 10,
+        alignItems: 'stretch',
     },
 
     headerText: {
+        marginVertical: 10,
+        textAlign: 'center',
         fontFamily: 'Montserrat-Medium',
         fontSize: 24,
         color: 'black',
     },
 
+    memberCard: {
+        marginHorizontal: 20,
+        marginVertical: 5,
+        height: 50, 
+        borderRadius: 10, 
+        justifyContent: 'center', 
+        alignItems: 'center',  
+        backgroundColor:'white',
+        shadowOpacity: 0.1,
+        shadowOffset: {width: 1, height: 4},
+        elevation: 3,
+    },
+
     buttonContainer: {
         flex: 0.10,
         justifyContent: 'center',
-        alignContent: 'center',
-        marginBottom: 20
+        alignContent: 'stretch',
+        marginBottom: 20,
     },
 
     button: {

@@ -36,7 +36,7 @@ export default class ProfileScreen extends React.Component{
     }
 
     getGroups() {
-        const uid = auth().currentUser.uid;
+        const uid = this.state.uid;
         listGroupsOfUser(uid, snapshot => {
             if (snapshot !== []) {
                 this.setState({groupIDs: snapshot});
