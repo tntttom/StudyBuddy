@@ -19,25 +19,24 @@ export default class StudyDetailsScreen extends React.Component{
     }
 
     componentDidMount() {
-        const groupID = this.state.group.groupID;
-        this.getMembers(groupID);
-    }
-
-    componentDidUpdate() {
         const uid = auth().currentUser.uid;
         const groupID = this.state.group.groupID;
+
+        this.getMembers(groupID); // Start listener for group members
+        // Initialize whether user is part of group or not
         isUserInGroup(uid, groupID).then(val => {
             this.setState({inGroup: val});
-        })
+        });
     }
 
     componentWillUnmount() {
         const groupID = this.state.group.groupID;
-        dbRefs.studyGroups.child(groupID + '/members').off();
+        dbRefs.studyGroups.child(groupID + '/members').off(); // Turn off listener
     }
 
     getMembers(groupID) {
         listUsersOfGroup(groupID, snapshot => {
+            console.log('data listener=',snapshot);
             var data = new Array();
             snapshot.forEach(member => {
                 data.push(member);
@@ -59,39 +58,35 @@ export default class StudyDetailsScreen extends React.Component{
         })
     }
 
-    // LOL how can I refactor this?
     joinLeaveButton() {
         const uid = auth().currentUser.uid;
         const groupID = this.state.group.groupID;
-        
+        let text, style, onPress;
+
         if (this.state.inGroup) {
-            return (
-                <TouchableOpacity style={styles.button}
-                    onPress={() => {
-                        removeConnection(uid, groupID);
-                        isUserInGroup(uid, groupID).then(val => {
-                            this.setState({inGroup: val});
-                        });
-                    }}    
-                >
-                    <Text style={styles.leaveText}>LEAVE STUDY GROUP</Text>
-                </TouchableOpacity>
-            );
+            text = 'LEAVE STUDY GROUP';
+            style = styles.leaveText;
+            onPress = () => {
+                removeConnection(uid, groupID);
+                this.setState({inGroup: false});
+            };
         }
         else {
-            return (
-                <TouchableOpacity style={styles.button}
-                    onPress={() => {
-                        addConnection(uid, groupID);
-                        isUserInGroup(uid, groupID).then(val => {
-                            this.setState({inGroup: val});
-                        });
-                    }}    
-                >
-                    <Text style={styles.joinText}>JOIN STUDY GROUP</Text>
-                </TouchableOpacity>
-            );
+            text = 'JOIN STUDY GROUP';
+            style = styles.joinText;
+            onPress = () => {
+                addConnection(uid, groupID);
+                this.setState({inGroup: true});
+            };
         }
+
+        return (
+            <TouchableOpacity style={styles.button}
+                onPress={() => onPress()}    
+            >
+                <Text style={style}>{text}</Text>
+            </TouchableOpacity>
+        );
     }
 
     render() {

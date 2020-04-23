@@ -55,19 +55,16 @@ export async function isUserInGroup(uid, groupID) {
 // List all the users in a group node
 // Use: Retrieve all members of a study group
 export function listUsersOfGroup(groupID, callback) {
-  
   dbRefs.studyGroups.child(groupID + '/members').on('value', snapshot => {
-    if (snapshot.exists()) {
-      let users = new Array();
-      snapshot.forEach(val => {
-        users.push(val.key);
-      })
+    console.log('I listened to change!');
+    
+    let users = new Array();
+    snapshot.forEach(val => {
+      users.push(val.key);
+    })
 
-      callback(users);
-    }
+    callback(users);
   })
-
-  
 }
 
 // List all the groups in a user node
