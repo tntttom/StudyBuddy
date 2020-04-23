@@ -26,7 +26,7 @@ export default class HomeScreen extends React.Component {
       studyGroups: [],
       groupCourse: '',
       groupTopic: '',
-      groupName: '',
+      name: '',
       groupLocation: '',
     };
   }
@@ -64,7 +64,7 @@ export default class HomeScreen extends React.Component {
     dbRefs.studyGroups.push({
       studyGroup: this.state.groupCourse,
       topic: 'Chapter 10',
-      groupName: 'Johns Group',
+      name: 'Johns Group',
       location: 'LSB 142',
     });
 

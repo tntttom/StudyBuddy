@@ -14,7 +14,7 @@ import {white} from 'color-name';
 import {useNavigation} from '@react-navigation/native';
 
 const HomeCard = ({
-  studyGroup: {studyGroup: course, topic, groupName, location},
+  studyGroup: {studyGroup: course, topic, name, location},
   id,
 }) => {
   const navigation = useNavigation();
@@ -23,7 +23,7 @@ const HomeCard = ({
     <TouchableOpacity
       onPress={() => {
         navigation.navigate('StudyDetails', {
-          name: groupName,
+          name: name,
           groupID: id,
         });
       }}>
@@ -32,7 +32,7 @@ const HomeCard = ({
         colors={['#FF1C1C', '#FF19FF']}>
         <Text style={styles.cardHeaderText}>{course}</Text>
         <Text style={styles.cardSubText}>{topic}</Text>
-        <Text style={styles.cardGroupName}>{groupName}</Text>
+        <Text style={styles.cardGroupName}>{name}</Text>
         <Text style={styles.cardLocationText}>{location}</Text>
       </LinearGradient>
     </TouchableOpacity>
