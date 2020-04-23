@@ -15,8 +15,9 @@ import HomeCard from '../components/card';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-import auth from '@react-native-firebase/auth';
 import dbRefs from '../api/firebase-database';
+
+import { addGroup, getAllGroups } from '../datastructure/graph.js';
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
@@ -51,25 +52,28 @@ export default class HomeScreen extends React.Component {
   });
 
   componentDidMount() {
-    dbRefs.studyGroups.on('value', querySnapShot => {
-      let data = querySnapShot.val() ? querySnapShot.val() : {};
-      let groups = {...data};
+    getAllGroups(groups => {
       this.setState({
-        studyGroups: groups,
+        studyGroups: groups
       });
     });
   }
 
+  componentWillUnmount() {
+    dbRefs.studyGroups.off();
+  }
+
   addStudyGroup() {
-    dbRefs.studyGroups.push({
+    const groupID = addGroup({
       studyGroup: this.state.groupCourse,
       topic: 'Chapter 10',
       groupName: 'Johns Group',
       location: 'LSB 142',
-    });
+    })
 
     Alert.alert('Action!', 'A new group was created!');
     this.setState({
+      groupID: groupID,
       groupCourse: '',
     });
   }
@@ -77,7 +81,7 @@ export default class HomeScreen extends React.Component {
   render() {
     let groupKeys = Object.keys(this.state.studyGroups);
 
-    // console.log(this.state.studyGroups);
+    console.log(this.state.studyGroups);
 
     return (
       <View style={styles.container}>

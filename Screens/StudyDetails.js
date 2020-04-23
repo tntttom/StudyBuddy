@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import dbRefs from '../api/firebase-database';
 import auth from '@react-native-firebase/auth';
 
-import { addConnection, removeConnection, isUserInGroup, listGroupsOfUser, listUsersOfGroup } from '../datastructure/graph.js';
+import { addConnection, removeConnection, isUserInGroup, listGroupsOfUser, listUsersOfGroup, getUser } from '../datastructure/graph.js';
 
 export default class StudyDetailsScreen extends React.Component{
     constructor(props) {
@@ -15,11 +15,14 @@ export default class StudyDetailsScreen extends React.Component{
             group: props.route.params,
             inGroup: false,
             members: [],
+            uid: '',
+            user: null,
         };
     }
 
     componentDidMount() {
         const uid = auth().currentUser.uid;
+        this.setState({uid: uid});
         const groupID = this.state.group.groupID;
 
         this.getMembers(groupID); // Start listener for group members
@@ -36,19 +39,16 @@ export default class StudyDetailsScreen extends React.Component{
 
     getMembers(groupID) {
         listUsersOfGroup(groupID, snapshot => {
-            console.log('data listener=',snapshot);
             var data = new Array();
             snapshot.forEach(member => {
                 data.push(member);
             });
             
-            console.log('data =', data);
             this.setState({members: data});
         });
     }
 
     listMembers() {
-        console.log('this.state.members = ',this.state.members);
         return this.state.members.map(member => {
             return (
                 // Only returning the uid of members right now
