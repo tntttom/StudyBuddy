@@ -110,12 +110,13 @@ export default class StudyDetailsScreen extends React.Component{
             <View style={styles.container}>
                 <View style={styles.groupContainer}>
                     <LinearGradient colors={['#FF7EF5', '#41E2FF']} style={styles.gradient}>
-                        <Text style={styles.groupText}>{group.groupName}</Text>
+                        <Text style={styles.groupText}>{group.topic}</Text>
+                        <Text style={styles.subText}>{group.course + ' - ' + group.location}</Text>
                     </LinearGradient>
                 </View>
 
                 <View style={styles.membersContainer}>
-                    <Text style={styles.headerText}>{group.studyGroup + ' study buddies'}</Text>
+                    <Text style={styles.headerText}>{group.name + ' study buddies'}</Text>
                     <ScrollView style={{marginVertical: 10}}>
                         {this.listMembers()}
                     </ScrollView>
@@ -151,8 +152,17 @@ const styles = StyleSheet.create({
     
     groupText: {
         fontFamily: 'Montserrat-Medium',
-        fontSize: 48,
+        fontSize: 36,
         color: 'white',
+        textAlign: 'center',
+    },
+
+    subText: {
+        fontFamily: 'Montserrat-Medium',
+        fontSize: 18,
+        color: 'white',
+        textAlign:'center',
+        marginTop: 20,
     },
 
     membersContainer: {

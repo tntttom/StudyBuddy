@@ -62,7 +62,9 @@ export default class ProfileScreen extends React.Component{
                             });
                         }}>
                         <View style={styles.cardContainer}>
-                            <Text style={styles.cardText}>{group.groupName}</Text>
+                            <Text style={styles.cardText}>{group.name}</Text>
+                            <Text style={styles.cardSubText}>{group.course}</Text>
+                            <Text style={styles.cardSubText}>{group.topic}</Text>
                         </View>
                     </TouchableOpacity>
                 );
@@ -75,21 +77,13 @@ export default class ProfileScreen extends React.Component{
             <View style={styles.container}>
                 <View style={styles.profileContainer}>
                     <LinearGradient colors={['#FF7EF5', '#41E2FF']} style={{ flex:1,}}>
-                        <View style={{justifyContent:'center', alignContent: 'center', width: Dimensions.get('screen').width, height: Dimensions.get('screen').height}}>
-                                
-                            {/* <Text style={{textAlign:'center'}}>GRADIENT</Text> */}
-                        
+                        <View style={styles.profileContainer}>
+                            <Text style={styles.nameText}>{this.state.profile.name}</Text>
                         </View>
                     </LinearGradient>
 
-                    <View style={{justifyContent:'flex-end', flex: 0.2}}>
-                        
-                    </View>
-
                     <View style={{backgroundColor:'white', flex: 0.4}}>
-                    <Text style={styles.nameText}>
-                        {this.state.profile.name}
-                    </Text>
+                    
                     <Text style={styles.detailText}>{'Class of ' + this.state.profile.graduationYear + ' ' + 
                         this.state.profile.major + ' student at ' + this.state.profile.schoolName + '.'}</Text>
                     </View>
@@ -171,7 +165,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'flex-start',
         backgroundColor: 'white',
     },  
 
@@ -181,15 +174,15 @@ const styles = StyleSheet.create({
 
     profileContainer: {
         flex: 0.5,
-        justifyContent: 'flex-start',
-        alignContent:'center',
+        justifyContent: 'center',
+        alignContent: 'center',
         width: Dimensions.get('window').width,
     },  
     
     nameText: {
         fontFamily: 'Montserrat-Medium',
-        fontSize: 24,
-        color: 'black',
+        fontSize: 36,
+        color: 'white',
         textAlign: 'center',
     },
 
@@ -242,14 +235,22 @@ const styles = StyleSheet.create({
         shadowColor: 'black',
         shadowOpacity: 0.1,
         shadowOffset: {width: 1, height: 4},
-        elevation: 5
+        elevation: 5,
+        justifyContent: 'space-around',
     },
 
     cardText: {
         color: 'black',
         fontFamily: 'Montserrat-Medium',
-        fontSize: 14,
-        marginTop:20
+        fontSize: 18,
+        textAlign: 'center',
+    },
+
+    cardSubText: {
+        color: 'black',
+        fontFamily: 'Montserrat-Medium',
+        fontSize: 12,
+        textAlign: 'center',
     },
 
     profileCard: {
