@@ -76,22 +76,19 @@ export default class ProfileScreen extends React.Component{
         return (
             <View style={styles.container}>
                 <View style={styles.profileContainer}>
-                    <LinearGradient colors={['#FF7EF5', '#41E2FF']} style={{ flex:1,}}>
-                        <View style={styles.profileContainer}>
-                            <Text style={styles.nameText}>{this.state.profile.name}</Text>
-                        </View>
+                    <LinearGradient colors={['#FF7EF5', '#41E2FF']} style={styles.gradient} >
+                        <Text style={styles.nameText}>{this.state.profile.name}</Text>
+                        <Text style={styles.usernameText}>{`@${this.state.user.displayName}`}</Text>
+                        <Text style={styles.detailText}>
+                            {`Class of ${this.state.profile.graduationYear} ${this.state.profile.major}` +
+                            `student at ${this.state.profile.schoolName}.`}
+                        </Text>
                     </LinearGradient>
-
-                    <View style={{backgroundColor:'white', flex: 0.4}}>
-                    
-                    <Text style={styles.detailText}>{'Class of ' + this.state.profile.graduationYear + ' ' + 
-                        this.state.profile.major + ' student at ' + this.state.profile.schoolName + '.'}</Text>
-                    </View>
-
                 </View>
 
-
                 <View style={styles.courseContainer}>
+                    
+                    
                     <Text style={styles.headerText}>study groups</Text>
 
                     <View style={styles.scrollViewCourseContainer}>
@@ -128,30 +125,30 @@ export default class ProfileScreen extends React.Component{
                             
                         </ScrollView>
                         <View>
-                            <Button
-                                title='Go to Home (Placeholder Navigation)'
-                                onPress={() =>
-                                    this.props.navigation.navigate('Home')
-                                }
-                            />
+                            
                         </View>
 
 
                     </View>
 
-                    <View style={{flex:0.2}}>
-                        <TouchableOpacity style={styles.button}
-                            onPress={() =>
-                                auth()
-                                    .signOut()
-                                    .then(() => console.log('User signed out!'))
-                            }>
-                            <Text style={styles.buttonText}>LOGOUT</Text>
-                        </TouchableOpacity>
-                    </View>
-
                 </View>
 
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button}
+                        onPress={() =>
+                            this.props.navigation.navigate('Home')
+                        }>
+                        <Text style={styles.buttonText}>GO HOME</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button}
+                        onPress={() =>
+                            auth()
+                                .signOut()
+                                .then(() => console.log('User signed out!'))
+                        }>
+                        <Text style={styles.buttonText}>LOGOUT</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
 
@@ -164,20 +161,23 @@ export default class ProfileScreen extends React.Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
+        alignItems: 'stretch',
         backgroundColor: 'white',
+        alignContent: 'center',
+    },  
+
+    profileContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'stretch',
+        width: Dimensions.get('window').width,
     },  
 
     gradient: {
-        width: 120,
-    },
-
-    profileContainer: {
-        flex: 0.5,
+        flex: 1,
+        alignItems: 'center',
         justifyContent: 'center',
-        alignContent: 'center',
-        width: Dimensions.get('window').width,
-    },  
+    },
     
     nameText: {
         fontFamily: 'Montserrat-Medium',
@@ -186,26 +186,33 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
+    usernameText: {
+        fontFamily: 'Montserrat-Medium',
+        fontSize: 18,
+        color: 'white',
+        textAlign:'center',
+        marginTop: 20,
+    },
+
     detailText: {
         fontFamily: 'Montserrat-Medium',
         fontSize: 14,
         textAlign:'center',
-        color: '#A29F9F',
+        color: 'white',
         marginTop: 20,
     },
 
     courseContainer: {
-        flex: 0.15,
+        flex: 1,
         justifyContent: 'flex-start',
         width: Dimensions.get('window').width,
     },
 
     buddyContainer: {
-        flex: 0.20,
+        flex: 1,
         justifyContent: 'flex-start',
         width: Dimensions.get('window').width,
         marginTop: 64,
-
     },
     
     headerText: {
@@ -270,10 +277,10 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        flex: 0.15,
-        justifyContent: 'flex-start',
-        alignSelf: 'flex-start',
-        marginBottom: 20
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'stretch',
+        marginBottom: 20,
     },
 
     button: {

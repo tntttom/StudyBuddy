@@ -41,7 +41,7 @@ export default class StudyDetailsScreen extends React.Component{
 
     componentWillUnmount() {
         const groupID = this.state.groupID;
-        dbRefs.studyGroups.child(groupID + '/members').off(); // Turn off listener
+        dbRefs.studyGroups.off(); // Turn off listener
     }
 
     getMembers() {
@@ -60,6 +60,7 @@ export default class StudyDetailsScreen extends React.Component{
         return this.state.members.map(member => {
             return (
                 <TouchableOpacity
+                    key={member.uid}
                     onPress={() => {
                         this.props.navigation.navigate('Profile', {
                             uid: member.uid,
@@ -111,12 +112,12 @@ export default class StudyDetailsScreen extends React.Component{
                 <View style={styles.groupContainer}>
                     <LinearGradient colors={['#FF7EF5', '#41E2FF']} style={styles.gradient}>
                         <Text style={styles.groupText}>{group.topic}</Text>
-                        <Text style={styles.subText}>{group.course + ' - ' + group.location}</Text>
+                        <Text style={styles.subText}>{`${group.course} - ${group.location}`}</Text>
                     </LinearGradient>
                 </View>
 
                 <View style={styles.membersContainer}>
-                    <Text style={styles.headerText}>{group.name + ' study buddies'}</Text>
+                    <Text style={styles.headerText}>{`"${group.name}" study buddies`}</Text>
                     <ScrollView style={{marginVertical: 10}}>
                         {this.listMembers()}
                     </ScrollView>
