@@ -72,6 +72,19 @@ export default class ProfileScreen extends React.Component{
         }
     }
 
+    listBuddies() {
+        // const buddies = this.state.buddies;
+        const buddies = [0, 1, 2, 3];
+
+        return buddies.map( (buddy, index) => {
+            return(
+                <View key={index} style={styles.profileCard}>
+                    <Text>{`Buddy Picture ${buddy}`}</Text>
+                </View>
+            );
+        });
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -104,31 +117,15 @@ export default class ProfileScreen extends React.Component{
                     <Text style={styles.headerText}>best study buddies</Text>
 
                     <View style={styles.scrollViewBuddyContainer}>
+
                         <ScrollView
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}>
-                            <View style={styles.profileCard}>
-                                <Text>Picture</Text>
-                            </View>
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}>
 
-                            <View style={styles.profileCard}>
-                                <Text>Picture</Text>
-                            </View>
-
-                            <View style={styles.profileCard}>
-                                <Text>Picture</Text>
-                            </View>
-
-                            <View style={styles.profileCard}>
-                                <Text>Picture</Text>
-                            </View>
+                            {this.listBuddies()}
                             
                         </ScrollView>
-                        <View>
-                            
-                        </View>
-
-
+                       
                     </View>
 
                 </View>

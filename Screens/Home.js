@@ -31,7 +31,7 @@ export default class HomeScreen extends React.Component {
     headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32},
     headerRight: () => (
       <Button
-        onPress={() => alert('This is a button')}
+        onPress={() => navigation.navigate('NewGroup')}
         title="+"
         color="black"
       />
@@ -62,27 +62,9 @@ export default class HomeScreen extends React.Component {
   render() {
     let groupKeys = Object.keys(this.state.studyGroups);
 
-    // console.log(this.state.studyGroups);
-
     return (
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {/* <TextInput
-            placeholder="Create A Group!"
-            value={this.state.groupCourse}
-            style={styles.textInput}
-            onChangeText={e => {
-              this.setState({
-                groupCourse: e,
-              });
-            }}
-          /> */}
-
-          <Button
-            title="Add new group"
-            onPress={() => this.props.navigation.navigate('NewGroup') }
-            color="blue"
-          />
 
           {groupKeys.length > 0 ? (
             groupKeys.map(key => (

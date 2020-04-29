@@ -71,7 +71,7 @@ export function addGroup(groupObject) {
 }
 
 // Remove group node and remove all connections to this group node
-// Use: a user of the group (the maker?) deletes the group
+// Use: a user of the group deletes the group
 export function removeGroup(groupID) {
   dbRefs.studyGroups.child(groupID).once('value').then(snapshot => {
     // Check if group exists
