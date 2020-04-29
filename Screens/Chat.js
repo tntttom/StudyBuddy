@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ScrollView, Text, StyleSheet, Dimensions, Button } from 'react-native';
+import { View, ScrollView, Text, StyleSheet, Dimensions, Button, Alert } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
 
@@ -11,6 +11,22 @@ export default class StudyDetailsScreen extends React.Component{
             group: props.route.params.group,
             members: props.route.params.members,
             chatBuddy: 0,
+            sentMessage: '',
+            messages: [
+                {fromBuddy: true, message: 'hello'},
+                {fromBuddy: false, message: 'hey what is up?'},
+                {fromBuddy: false, message: 'wyd?'},
+                {fromBuddy: true, message: 'trying to study for finals'},
+                {fromBuddy: true, message: 'hbu?'},
+                {fromBuddy: true, message: 'procrastinating maybe? :P'},
+                {fromBuddy: false, message: 'lmao how did you know?'},
+                {fromBuddy: false, message: 'yeah I need some motivation to get me goin'},
+                {fromBuddy: true, message: 'I can help!'},
+                {fromBuddy: false, message: 'what are you studying rn?'},
+                {fromBuddy: false, message: 'I need to study up on the formulas'},
+                {fromBuddy: true, message: 'oh perfect, me too'},
+                {fromBuddy: false, message: 'awesome'},
+            ]
         }
     }
 
@@ -32,23 +48,36 @@ export default class StudyDetailsScreen extends React.Component{
     }
 
     listMessages() {
-        return (
-            <View style={styles.messagesContainer}>
+        return this.state.messages.map( (msg, index) => {
+            return(
+                <View style={msg.fromBuddy ? styles.messageReceived : styles.messageSent}>
+                    <Text style={styles.messageText} key={index}>{msg.message}</Text>
+                </View>
+            );
+        })
+        
+    }
 
-            </View>
-        );
+    findBuddy() {
+
     }
 
     render() {
         return(
             <View style={styles.container}>
-                <LinearGradient colors={['#FF7EF5', '#41E2FF']} style={styles.gradient}>
+                <LinearGradient colors={['#F43BD0','#F02323']} style={styles.gradient}>
                 <View style={styles.buddyContainer}>
                     
                         
                         <View style={{flexDirection:'row', justifyContent:'space-between', margin: 10}}>
                             <Text style={styles.headerText}>study buddies</Text>
-                            <Button title='new buddy +'></Button>
+                            <Button 
+                                title='new buddy +'
+                                onPress={() => {
+                                    Alert.alert('Finding a buddy!', `You're buddy will appear in the "study buddies" list soon!`)
+                                    this.findBuddy()
+                                }}
+                            />
                         </View>
                             
                         
@@ -65,11 +94,11 @@ export default class StudyDetailsScreen extends React.Component{
 
                 <View style={styles.chatContainer}>
                     <Text style={styles.headerText}>{`chatting with ${this.state.chatBuddy}`}</Text>
-                
-                    {this.listMessages()}
-
                     
-
+                    <ScrollView ref={scroll => { this.scrollView = scroll}}>
+                        {this.listMessages()}
+                    </ScrollView>
+                    
                 </View>  
                 
                 <View style={styles.inputContainer}>
@@ -78,10 +107,15 @@ export default class StudyDetailsScreen extends React.Component{
                                 textAlign='left'
                                 placeholderTextColor = "black"
                                 placeholder={`Send ${this.state.chatBuddy} a message...`}
-                                onChangeText={(text) => this.setState({ email: text })}
+                                ref={input => { this.textInput = input }}
+                                onChangeText={(text) => this.setState({ sentMessage: text })}
                             />
                             <TouchableOpacity style={styles.sendButton}
-
+                                onPress={() => {
+                                    Alert.alert('Hooray!',`You're message to ${this.state.chatBuddy} has been sent!`);
+                                    this.setState({ sentMessage: '' });
+                                    this.textInput.clear();
+                                }}
                             >
                                 <Text>Send</Text>
                             </TouchableOpacity>
@@ -105,29 +139,6 @@ const styles = StyleSheet.create({
     gradient: {
         flex: 1,
     },
-    
-    nameText: {
-        fontFamily: 'Montserrat-Medium',
-        fontSize: 36,
-        color: 'white',
-        textAlign: 'center',
-    },
-
-    usernameText: {
-        fontFamily: 'Montserrat-Medium',
-        fontSize: 18,
-        color: 'white',
-        textAlign:'center',
-        marginTop: 20,
-    },
-
-    detailText: {
-        fontFamily: 'Montserrat-Medium',
-        fontSize: 14,
-        textAlign:'center',
-        color: 'white',
-        marginTop: 20,
-    },
 
     buddyContainer: {
         flex: 1,
@@ -142,7 +153,31 @@ const styles = StyleSheet.create({
 
     messagesContainer: {
         flex: 1,
-        elevation: 10
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+    },
+
+    messageSent: {
+        alignSelf: 'flex-end',
+        marginHorizontal: 10,
+        marginVertical: 5,
+        borderRadius: 120/2,
+        backgroundColor: '#F02323',
+    },
+
+    messageReceived: {
+        alignSelf: 'flex-start',
+        marginHorizontal: 10,
+        marginVertical: 5,
+        borderRadius: 120/2,
+        backgroundColor: '#F43BD0',
+    },
+
+    messageText: {
+        fontFamily: 'Montserrat-Medium',
+        fontSize: 14,
+        color: 'white',
+        margin: 10,
     },
 
     inputContainer: {
@@ -172,7 +207,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Medium',
         fontSize: 24,
         color: 'black',
-        marginLeft: 20,
     },
 
     scrollViewBuddyContainer: {
