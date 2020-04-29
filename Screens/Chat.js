@@ -2,15 +2,21 @@ import * as React from 'react';
 import { View, ScrollView, Text, StyleSheet, Dimensions, Button, Alert } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
+import { listBuddiesOfGroup, getUser, addBuddy } from '../datastructure/graph';
+
+import auth from '@react-native-firebase/auth';
+import dbRefs from '../api/firebase-database';
 
 export default class StudyDetailsScreen extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
+            userID: auth().currentUser.uid,
             groupID: props.route.params.groupID,
             group: props.route.params.group,
             members: props.route.params.members,
-            chatBuddy: 0,
+            buddies: [],
+            chatBuddy: '',
             sentMessage: '',
             messages: [
                 {fromBuddy: true, message: 'hello'},
@@ -30,17 +36,37 @@ export default class StudyDetailsScreen extends React.Component{
         }
     }
 
+    componentDidMount() {
+        this.getBuddies();
+    }
+
+    componentWillUnmount() {
+        dbRefs.users.off();
+    }
+
+    getBuddies() {
+        const groupID = this.state.groupID;
+        const uid = this.state.userID;
+        listBuddiesOfGroup(uid, groupID, snapshot => {
+            this.setState({buddies: []});
+            snapshot.forEach(buddy => {
+                getUser(buddy).then(buddyObj => {
+                    this.setState({buddies: this.state.buddies.concat(buddyObj)});
+                })
+            });
+        });
+    }
+
     listBuddies() {
-        // const buddies = this.state.buddies;
-        const buddies = [0, 1, 2, 3, 4, 5, 6];
+        const buddies = this.state.buddies;
 
         return buddies.map( (buddy, index) => {
             return(
                 <View key={index} style={styles.profileCard}>
                     <TouchableOpacity 
                         style={{flex:1, justifyContent:'center'}}
-                        onPress={() => this.setState({chatBuddy: buddy})}>
-                        <Text style={{textAlign: 'center'}}>{`Buddy Picture ${buddy}`}</Text>
+                        onPress={() => this.setState({chatBuddy: buddy.profile.name})}>
+                        <Text style={{textAlign: 'center'}}>{buddy.profile.name}</Text>
                     </TouchableOpacity>
                 </View>
             );
@@ -50,8 +76,8 @@ export default class StudyDetailsScreen extends React.Component{
     listMessages() {
         return this.state.messages.map( (msg, index) => {
             return(
-                <View style={msg.fromBuddy ? styles.messageReceived : styles.messageSent}>
-                    <Text style={styles.messageText} key={index}>{msg.message}</Text>
+                <View key={index} style={msg.fromBuddy ? styles.messageReceived : styles.messageSent}>
+                    <Text style={styles.messageText}>{msg.message}</Text>
                 </View>
             );
         })
@@ -59,7 +85,7 @@ export default class StudyDetailsScreen extends React.Component{
     }
 
     findBuddy() {
-
+        addBuddy(this.state.userID, this.state.groupID);
     }
 
     render() {
@@ -70,7 +96,7 @@ export default class StudyDetailsScreen extends React.Component{
                     
                         
                         <View style={{flexDirection:'row', justifyContent:'space-between', margin: 10}}>
-                            <Text style={styles.headerText}>study buddies</Text>
+                            <Text style={styles.headerText}>{`${this.state.group.name} buddies`}</Text>
                             <Button 
                                 title='new buddy +'
                                 onPress={() => {
@@ -93,7 +119,7 @@ export default class StudyDetailsScreen extends React.Component{
                 </View>
 
                 <View style={styles.chatContainer}>
-                    <Text style={styles.headerText}>{`chatting with ${this.state.chatBuddy}`}</Text>
+                    <Text style={styles.headerText}>{this.state.chatBuddy === '' ? `pick a buddy above!` : `chatting with ${this.state.chatBuddy}`}</Text>
                     
                     <ScrollView ref={scroll => { this.scrollView = scroll}}>
                         {this.listMessages()}

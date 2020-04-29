@@ -90,6 +90,28 @@ export function removeGroup(groupID) {
   })
 }
 
+// Add new buddy to group
+// Use: user opts-in to find a study buddy match
+export function addBuddy(userID, groupID) {
+  dbRefs.studyGroups.child(groupID + '/newBuddies/' + userID).set(userID);
+}
+
+// Remove new buddy from group
+// Use: users were matched and no longer are new buddies
+export function removeBuddy(userID, groupID) {
+  dbRefs.studyGroups.child(groupID + '/newBuddies/' + userID).remove();
+}
+
+// Find buddy match
+// Use: match new buddies together based on certain filters
+// Filter: must be of same school
+export function matchBuddies(groupID) {
+  // Need to work on this! This is the true algorithm!
+  // Pseudocode: get all user objects within newbuddies -> find first two buddies with same school
+  // -> then make each other buddies on their user nodes -> remove them from new buddies
+  dbRefs.studyGroups.child(groupID + '/newBuddies/' + userID).set(userID);
+}
+
 // Add bidirectional edge between group node and user node
 // Use: user joins a study group
 export function addConnection(userID, groupID) {
@@ -135,6 +157,19 @@ export function listUsersOfGroup(groupID, callback) {
 // Use: Retrieve all study groups a member is in
 export function listGroupsOfUser(userID, callback) {
   dbRefs.users.child(userID + '/groups').on('value', snapshot => {    
+    let groups = new Array();
+    snapshot.forEach(val => {
+      groups.push(val.key);
+    })
+
+    callback(groups);
+  })
+}
+
+// List all the buddies of a study group in a user node
+// Use: Retrieve all a user's study buddies for a certain study group
+export function listBuddiesOfGroup(userID, groupID, callback) {
+  dbRefs.users.child(userID + '/buddies/' + groupID).on('value', snapshot => {    
     let groups = new Array();
     snapshot.forEach(val => {
       groups.push(val.key);
