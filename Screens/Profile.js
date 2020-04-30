@@ -53,21 +53,22 @@ export default class ProfileScreen extends React.Component{
 
         if (groups !== []) {
             return groups.map( (group, index) => {
-                console.log(group);
-                return(
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.props.navigation.navigate('StudyDetails', {
-                                groupID: this.state.groupIDs[index],
-                            });
-                        }}>
-                        <View style={styles.cardContainer}>
-                            <Text style={styles.cardText}>{group.name}</Text>
-                            <Text style={styles.cardSubText}>{group.course}</Text>
-                            <Text style={styles.cardSubText}>{group.topic}</Text>
-                        </View>
-                    </TouchableOpacity>
-                );
+                if (group !== null) {
+                    return(
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.props.navigation.navigate('StudyDetails', {
+                                    groupID: this.state.groupIDs[index],
+                                });
+                            }}>
+                            <View style={styles.cardContainer}>
+                                <Text style={styles.cardText}>{group.name}</Text>
+                                <Text style={styles.cardSubText}>{group.course}</Text>
+                                <Text style={styles.cardSubText}>{group.topic}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    );
+                }
             });
         }
     }
@@ -94,7 +95,7 @@ export default class ProfileScreen extends React.Component{
                         <Text style={styles.usernameText}>{`@${this.state.user.displayName}`}</Text>
                         <Text style={styles.detailText}>
                             {`Class of ${this.state.profile.graduationYear} ${this.state.profile.major}` +
-                            `student at ${this.state.profile.schoolName}.`}
+                            ` student at ${this.state.profile.schoolName}.`}
                         </Text>
                     </LinearGradient>
                 </View>
@@ -275,7 +276,7 @@ const styles = StyleSheet.create({
 
     buttonContainer: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'stretch',
         marginBottom: 20,
     },

@@ -103,7 +103,8 @@ export function addBuddy(userID, groupID) {
 export function removeBuddy(userID, groupID) {
   dbRefs.studyGroups.child(groupID + '/newBuddies/' + userID).remove()
   .then(() => {
-    console.log(`${userID} removed from ${groupID}`);
+    // Removal success!
+    // console.log(`${userID} removed from ${groupID}`);
   })
 }
 
@@ -121,8 +122,6 @@ export function matchBuddies(userID, groupID) {
 
     for (var key of keys) {
       let school = snapshot.val()[key];
-      console.log('school = ',school);
-      console.log('userSchoolName = ',userSchoolName);
 
       if (key === userID) {
         // Do nothing, can't match with oneself
