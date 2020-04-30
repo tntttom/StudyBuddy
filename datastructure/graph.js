@@ -93,23 +93,51 @@ export function removeGroup(groupID) {
 // Add new buddy to group
 // Use: user opts-in to find a study buddy match
 export function addBuddy(userID, groupID) {
-  dbRefs.studyGroups.child(groupID + '/newBuddies/' + userID).set(userID);
+  getUser(userID).then(userObj => {
+    dbRefs.studyGroups.child(groupID + '/newBuddies/' + userID).set(userObj.profile.schoolName);
+  })
 }
 
 // Remove new buddy from group
 // Use: users were matched and no longer are new buddies
 export function removeBuddy(userID, groupID) {
-  dbRefs.studyGroups.child(groupID + '/newBuddies/' + userID).remove();
+  dbRefs.studyGroups.child(groupID + '/newBuddies/' + userID).remove()
+  .then(() => {
+    console.log(`${userID} removed from ${groupID}`);
+  })
 }
 
 // Find buddy match
 // Use: match new buddies together based on certain filters
 // Filter: must be of same school
-export function matchBuddies(groupID) {
-  // Need to work on this! This is the true algorithm!
-  // Pseudocode: get all user objects within newbuddies -> find first two buddies with same school
-  // -> then make each other buddies on their user nodes -> remove them from new buddies
-  dbRefs.studyGroups.child(groupID + '/newBuddies/' + userID).set(userID);
+export function matchBuddies(userID, groupID) {
+  addBuddy(userID, groupID);
+
+  dbRefs.studyGroups.child(groupID + '/newBuddies').once('value', snapshot => {
+
+    console.log(snapshot);
+    const userSchoolName = snapshot.val()[userID];
+    const keys = Object.keys(snapshot.val());
+
+    for (var key of keys) {
+      let school = snapshot.val()[key];
+      console.log('school = ',school);
+      console.log('userSchoolName = ',userSchoolName);
+
+      if (key === userID) {
+        // Do nothing, can't match with oneself
+      }
+      else if (school === userSchoolName) {
+        // Schools match! Make users buddies within that group
+        dbRefs.users.child(`${userID}/buddies/${groupID}/${key}`).set(key);
+        dbRefs.users.child(`${key}/buddies/${groupID}/${userID}`).set(userID);
+        // Remove each user from the new buddies list in the group
+        removeBuddy(userID,groupID);
+        removeBuddy(key,groupID);
+        break; // Do no more comparisons
+      }
+    }
+  })
 }
 
 // Add bidirectional edge between group node and user node

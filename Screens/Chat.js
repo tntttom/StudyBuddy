@@ -2,12 +2,12 @@ import * as React from 'react';
 import { View, ScrollView, Text, StyleSheet, Dimensions, Button, Alert } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
-import { listBuddiesOfGroup, getUser, addBuddy } from '../datastructure/graph';
+import { listBuddiesOfGroup, getUser, addBuddy, matchBuddies } from '../datastructure/graph';
 
 import auth from '@react-native-firebase/auth';
 import dbRefs from '../api/firebase-database';
 
-export default class StudyDetailsScreen extends React.Component{
+export default class Chat extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -35,6 +35,11 @@ export default class StudyDetailsScreen extends React.Component{
             ]
         }
     }
+
+    static navigationOptions = ({route}) => ({
+        title: route.params.group.name,
+        headerTitleStyle: {fontFamily: 'Montserrat-Medium', fontSize: 32},
+      });
 
     componentDidMount() {
         this.getBuddies();
@@ -84,26 +89,15 @@ export default class StudyDetailsScreen extends React.Component{
         
     }
 
-    findBuddy() {
-        addBuddy(this.state.userID, this.state.groupID);
-    }
-
     render() {
         return(
             <View style={styles.container}>
-                <LinearGradient colors={['#F43BD0','#F02323']} style={styles.gradient}>
+                <LinearGradient colors={['#FF7EF5', '#41E2FF']} style={styles.gradient}>
                 <View style={styles.buddyContainer}>
                     
                         
                         <View style={{flexDirection:'row', justifyContent:'space-between', margin: 10}}>
-                            <Text style={styles.headerText}>{`${this.state.group.name} buddies`}</Text>
-                            <Button 
-                                title='new buddy +'
-                                onPress={() => {
-                                    Alert.alert('Finding a buddy!', `You're buddy will appear in the "study buddies" list soon!`)
-                                    this.findBuddy()
-                                }}
-                            />
+                            <Text style={styles.headerText}>{this.state.chatBuddy === '' ? `pick a buddy below!` : `chatting with ${this.state.chatBuddy}`}</Text>
                         </View>
                             
                         
@@ -111,6 +105,17 @@ export default class StudyDetailsScreen extends React.Component{
                             style={styles.scrollViewBuddyContainer}
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}>
+
+                            <View style={styles.profileCard}>
+                                <TouchableOpacity 
+                                    style={{flex:1, justifyContent:'center'}}
+                                    onPress={() => {
+                                        matchBuddies(this.state.userID, this.state.groupID);
+                                        Alert.alert('Sit tight!',`We're finding a study buddy for you! Once a buddy is found, they will appear in this chat!`);
+                                    }}>
+                                    <Text style={{textAlign: 'center'}}>New Buddy +</Text>
+                                </TouchableOpacity>
+                            </View>
                             
                             {this.listBuddies()}
                              
@@ -119,12 +124,9 @@ export default class StudyDetailsScreen extends React.Component{
                 </View>
 
                 <View style={styles.chatContainer}>
-                    <Text style={styles.headerText}>{this.state.chatBuddy === '' ? `pick a buddy above!` : `chatting with ${this.state.chatBuddy}`}</Text>
-                    
                     <ScrollView ref={scroll => { this.scrollView = scroll}}>
                         {this.listMessages()}
                     </ScrollView>
-                    
                 </View>  
                 
                 <View style={styles.inputContainer}>
@@ -165,11 +167,21 @@ const styles = StyleSheet.create({
     gradient: {
         flex: 1,
     },
+    
+    headerText: {
+        fontFamily: 'Montserrat-Medium',
+        fontSize: 24,
+        color: 'black',
+    },
 
     buddyContainer: {
         flex: 1,
         justifyContent: 'flex-start',
         width: Dimensions.get('window').width,
+    },
+
+    scrollViewBuddyContainer: {
+        flex:1,
     },
 
     chatContainer: {
@@ -228,16 +240,6 @@ const styles = StyleSheet.create({
         margin: 5,
         borderRadius: 120/2
     },
-    
-    headerText: {
-        fontFamily: 'Montserrat-Medium',
-        fontSize: 24,
-        color: 'black',
-    },
-
-    scrollViewBuddyContainer: {
-        flex:1,
-    },
 
     profileCard: {
         aspectRatio: 1,
@@ -251,7 +253,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowOffset: {width: 1, height: 4},
         marginTop: 6,
-        elevation: 5
+        elevation: 5,
+        padding: 5,
     },
     
 })

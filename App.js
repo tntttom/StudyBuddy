@@ -75,6 +75,7 @@ function AppStack(isNewUser) {
         <Stack.Screen
           name="Chat"
           component={Chat}
+          options={Chat.navigationOptions}
         />
       </>
     );
