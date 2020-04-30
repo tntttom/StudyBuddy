@@ -124,7 +124,8 @@ export default class StudyDetailsScreen extends React.Component{
                 </View>
                 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button}
+                    <TouchableOpacity style={this.state.inGroup ? styles.button : [styles.button, {opacity: 0.5}]}
+                        disabled={!this.state.inGroup}
                         onPress={() =>
                             this.props.navigation.navigate('Chat', {
                                 groupID: this.state.groupID,
@@ -132,7 +133,7 @@ export default class StudyDetailsScreen extends React.Component{
                                 members: this.state.members,
                             })
                         }>
-                        <Text style={styles.joinText}>OPEN CHAT</Text>
+                        <Text style={styles.joinText}>{this.state.inGroup ? `CHAT WITH STUDY BUDDIES` : `JOIN STUDY GROUP TO CHAT`}</Text>
                     </TouchableOpacity>
                     {this.joinLeaveButton()}
                 </View>
