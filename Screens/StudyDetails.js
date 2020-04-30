@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import dbRefs from '../api/firebase-database';
 import auth from '@react-native-firebase/auth';
 
-import { addConnection, removeConnection, isUserInGroup, listUsersOfGroup, getGroup, getUser } from '../datastructure/graph.js';
+import { addConnection, removeConnection, isUserInGroup, listUsersOfGroup, getGroup, getUser, removeBuddy } from '../datastructure/graph.js';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default class StudyDetailsScreen extends React.Component{
@@ -84,6 +84,7 @@ export default class StudyDetailsScreen extends React.Component{
             style = styles.leaveText;
             onPress = () => {
                 removeConnection(uid, groupID);
+                removeBuddy(uid, groupID);
                 this.setState({inGroup: false});
             };
         }
